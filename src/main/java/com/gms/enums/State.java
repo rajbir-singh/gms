@@ -1,4 +1,4 @@
-package com.gms.account.enums;
+package com.gms.enums;
 
 public enum State {
     AP("Andhra Pradesh"),

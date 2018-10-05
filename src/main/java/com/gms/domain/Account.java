@@ -1,11 +1,9 @@
-package com.gms.account;
+package com.gms.domain;
 
-import com.gms.account.enums.State;
+import com.gms.enums.State;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -25,10 +23,13 @@ public class Account {
     private String qualification;
     private String occupation;
     private Long income;
-    private String resCity;
-    private State resState;
-    private String workCity;
-    private State workState;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
+    private Address residenceAddress;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
+    private Address correspondenceAddress;
+
     private boolean ownHouse;
     private boolean onlyChild;
     private String details;
@@ -36,8 +37,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(Long accountId, String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, String resCity, State resState, String workCity, State workState, boolean ownHouse, boolean onlyChild, String details) {
-        this.accountId = accountId;
+    public Account(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, Address residenceAddress, Address correspondenceAddress, boolean ownHouse, boolean onlyChild, String details) {
         this.name = name;
         this.dob = dob;
         this.fathersName = fathersName;
@@ -51,10 +51,8 @@ public class Account {
         this.qualification = qualification;
         this.occupation = occupation;
         this.income = income;
-        this.resCity = resCity;
-        this.resState = resState;
-        this.workCity = workCity;
-        this.workState = workState;
+        this.residenceAddress = residenceAddress;
+        this.correspondenceAddress = correspondenceAddress;
         this.ownHouse = ownHouse;
         this.onlyChild = onlyChild;
         this.details = details;
@@ -176,36 +174,20 @@ public class Account {
         this.income = income;
     }
 
-    public String getResCity() {
-        return resCity;
+    public Address getResidenceAddress() {
+        return residenceAddress;
     }
 
-    public void setResCity(String resCity) {
-        this.resCity = resCity;
+    public void setResidenceAddress(Address residenceAddress) {
+        this.residenceAddress = residenceAddress;
     }
 
-    public State getResState() {
-        return resState;
+    public Address getCorrespondenceAddress() {
+        return correspondenceAddress;
     }
 
-    public void setResState(State resState) {
-        this.resState = resState;
-    }
-
-    public String getWorkCity() {
-        return workCity;
-    }
-
-    public void setWorkCity(String workCity) {
-        this.workCity = workCity;
-    }
-
-    public State getWorkState() {
-        return workState;
-    }
-
-    public void setWorkState(State workState) {
-        this.workState = workState;
+    public void setCorrespondenceAddress(Address correspondenceAddress) {
+        this.correspondenceAddress = correspondenceAddress;
     }
 
     public boolean isOwnHouse() {

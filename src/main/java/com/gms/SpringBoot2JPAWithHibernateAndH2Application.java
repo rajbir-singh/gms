@@ -1,9 +1,7 @@
 package com.gms;
 
-import com.gms.account.Account;
-import com.gms.account.AccountRepository;
-import com.gms.student.Student;
-import com.gms.student.StudentRepository;
+import com.gms.domain.Account;
+import com.gms.repository.AccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +27,13 @@ public class SpringBoot2JPAWithHibernateAndH2Application implements CommandLineR
 		logger.info("count -> {}", repository.count());
 		logger.info("Student id 10001 -> {}", repository.findById(1L));
 
-		logger.info("Inserting -> {}", repository.save(new Account("John")));
+		logger.info("Inserting -> {}", repository.save(new Account("singh")));
 
 //		logger.info("Update 10003 -> {}", repository.save(new Student(10001L, "Name-Updated", "New-Passport")));
 
 //		repository.deleteById(10002L);
 
+		logger.info("count -> {}", repository.count());
 		logger.info("All users -> {}", repository.findAll());
 	}
 }

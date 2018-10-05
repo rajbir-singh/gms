@@ -1,5 +1,6 @@
-package com.gms.student;
+package com.gms.repository;
 
+import com.gms.domain.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

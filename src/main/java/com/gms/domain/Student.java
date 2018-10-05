@@ -1,4 +1,4 @@
-package com.gms.student;
+package com.gms.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
