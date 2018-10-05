@@ -1,19 +1,10 @@
-package com.gms.domain;
+package com.gms.dto;
 
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+public class AddressCreateDto {
 
-@Entity
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private String  addressId;
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
@@ -25,10 +16,10 @@ public class Address {
     private String country;
     private AddressType addressType;
 
-    public Address() {
+    public AddressCreateDto() {
     }
 
-    public Address(String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
+    public AddressCreateDto(String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.addressLine3 = addressLine3;
@@ -38,27 +29,6 @@ public class Address {
         this.pincode = pincode;
         this.country = country;
         this.addressType = addressType;
-    }
-
-    public Address(String addressId, String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
-        this.addressId = addressId;
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.addressLine3 = addressLine3;
-        this.addressLine4 = addressLine4;
-        this.city = city;
-        this.state = state;
-        this.pincode = pincode;
-        this.country = country;
-        this.addressType = addressType;
-    }
-
-    public String getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(String addressId) {
-        this.addressId = addressId;
     }
 
     public String getAddressLine1() {
@@ -133,10 +103,6 @@ public class Address {
         this.addressType = addressType;
     }
 
-    public static interface AddressIdStep {
-        AddressLine1Step withAddressId(String addressId);
-    }
-
     public static interface AddressLine1Step {
         AddressLine2Step withAddressLine1(String addressLine1);
     }
@@ -174,12 +140,11 @@ public class Address {
     }
 
     public static interface BuildStep {
-        Address build();
+        AddressCreateDto build();
     }
 
 
-    public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, BuildStep {
-        private String addressId;
+    public static class Builder implements AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, BuildStep {
         private String addressLine1;
         private String addressLine2;
         private String addressLine3;
@@ -193,14 +158,8 @@ public class Address {
         private Builder() {
         }
 
-        public static AddressIdStep address() {
+        public static AddressLine1Step addressCreateDto() {
             return new Builder();
-        }
-
-        @Override
-        public AddressLine1Step withAddressId(String addressId) {
-            this.addressId = addressId;
-            return this;
         }
 
         @Override
@@ -258,9 +217,8 @@ public class Address {
         }
 
         @Override
-        public Address build() {
-            return new Address(
-                    this.addressId,
+        public AddressCreateDto build() {
+            return new AddressCreateDto(
                     this.addressLine1,
                     this.addressLine2,
                     this.addressLine3,

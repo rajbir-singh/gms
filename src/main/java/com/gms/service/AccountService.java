@@ -1,5 +1,10 @@
 package com.gms.service;
 
+import com.gms.converter.AccountCreateDtoConverter;
+import com.gms.converter.AccountListItemConverter;
+import com.gms.domain.Account;
+import com.gms.dto.AccountCreateDto;
+import com.gms.dto.AccountListItemDto;
 import com.gms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,44 +20,49 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private UserDtoConverter userDtoConverter;
+    private AccountListItemConverter accountListItemConverter;
 
-    public List<UserDto> findAll() {
-        List<User> users = userRepository.findAll();
-        if (Utils.isEmptyObject(users) || users.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return getUserDtosFromUsersList(users);
+    @Autowired
+    private AccountCreateDtoConverter accountCreateDtoConverter;
+
+    public List<AccountListItemDto> findAll() {
+        Iterable<Account> accounts = accountRepository.findAll();
+//        if (Utils.isEmptyList(accounts)) {
+//            return Collections.emptyList();
+//        }
+        return getAccountListItemDtosFromAccountsList(accounts);
     }
 
-    public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
+    public Account findByUserId(String accountId) {
+        return accountRepository.findByAccountId(accountId);
     }
 
-    public User updateUser(UserDto userDto) {
-        if (Utils.isEmptyObject(userDto) || Utils.isEmptyObject(userDto.getUserId())) {
-            return null;
-        }
-        return userRepository.save(userDtoConverter.convertFromDto(userDto));
-    }
+//    public Account updateUser(UserDto userDto) {
+//        if (Utils.isEmptyObject(userDto) || Utils.isEmptyObject(userDto.getUserId())) {
+//            return null;
+//        }
+//        return userRepository.save(userDtoConverter.convertFromDto(userDto));
+//    }
 
-    public User createUser(User user) {
-        if (Utils.isEmptyObject(user)) {
-            return null;
-        }
-        return userRepository.save(user);
-    }
+//    public Account createUser(AccountCreateDto accountCreateDto) {
+//        if (Utils.isEmptyObject(accountCreateDto)) {
+//            return null;
+//        }
+//        Account account = accountCreateDtoConverter.convert(accountCreateDto);
+//        return accountRepository.save(account);
+//    }
 
-    public List<User> searchByNameOrMobileOrEmail(String query) {
-        return userRepository.findByNameContainingOrMobileContainingOrEmailContaining(query, query, query);
-    }
+//    public List<User> searchByNameOrMobileOrEmail(String query) {
+//        return userRepository.findByNameContainingOrMobileContainingOrEmailContaining(query, query, query);
+//    }
 
-    public List<UserDto> getUserDtosFromUsersList(List<User> users) {
-        if (users == null || users.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<UserDto> userDtos = new ArrayList<>();
-        users.forEach(user -> userDtos.add(userDtoConverter.convertToDto(user)));
-        return userDtos;
+    public List<AccountListItemDto> getAccountListItemDtosFromAccountsList(Iterable<Account> accounts) {
+        //TODO: add empty list check for iterable
+//        if (Utils.isNonEmptyList(accounts)) {
+//            return Collections.emptyList();
+//        }
+        List<AccountListItemDto> accountListItemDtos = new ArrayList<>();
+        accounts.forEach(user -> accountListItemDtos.add(accountListItemConverter.convertToDto(user)));
+        return accountListItemDtos;
     }
 }

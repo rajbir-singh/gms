@@ -1,15 +1,7 @@
-package com.gms.domain;
+package com.gms.dto;
 
-import com.gms.enums.State;
+public class AccountCreateDto {
 
-import javax.persistence.*;
-import java.util.List;
-
-@Entity
-public class Account {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long accountId;
     private String name;
     private String dob;
     private String fathersName;
@@ -23,21 +15,17 @@ public class Account {
     private String qualification;
     private String occupation;
     private Long income;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-    private Address residenceAddress;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-    private Address correspondenceAddress;
-
+    private AddressCreateDto residenceAddress;
+    private AddressCreateDto correspondenceAddress;
     private boolean ownHouse;
     private boolean onlyChild;
     private String details;
 
-    public Account() {
+    public AccountCreateDto() {
+
     }
 
-    public Account(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, Address residenceAddress, Address correspondenceAddress, boolean ownHouse, boolean onlyChild, String details) {
+    public AccountCreateDto(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, AddressCreateDto residenceAddress, AddressCreateDto correspondenceAddress, boolean ownHouse, boolean onlyChild, String details) {
         this.name = name;
         this.dob = dob;
         this.fathersName = fathersName;
@@ -56,18 +44,6 @@ public class Account {
         this.ownHouse = ownHouse;
         this.onlyChild = onlyChild;
         this.details = details;
-    }
-
-    public Account(String name) {
-        this.name = name;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
     }
 
     public String getName() {
@@ -174,19 +150,19 @@ public class Account {
         this.income = income;
     }
 
-    public Address getResidenceAddress() {
+    public AddressCreateDto getResidenceAddress() {
         return residenceAddress;
     }
 
-    public void setResidenceAddress(Address residenceAddress) {
+    public void setResidenceAddress(AddressCreateDto residenceAddress) {
         this.residenceAddress = residenceAddress;
     }
 
-    public Address getCorrespondenceAddress() {
+    public AddressCreateDto getCorrespondenceAddress() {
         return correspondenceAddress;
     }
 
-    public void setCorrespondenceAddress(Address correspondenceAddress) {
+    public void setCorrespondenceAddress(AddressCreateDto correspondenceAddress) {
         this.correspondenceAddress = correspondenceAddress;
     }
 
@@ -267,11 +243,11 @@ public class Account {
     }
 
     public static interface ResidenceAddressStep {
-        CorrespondenceAddressStep withResidenceAddress(Address residenceAddress);
+        CorrespondenceAddressStep withResidenceAddress(AddressCreateDto residenceAddress);
     }
 
     public static interface CorrespondenceAddressStep {
-        OwnHouseStep withCorrespondenceAddress(Address correspondenceAddress);
+        OwnHouseStep withCorrespondenceAddress(AddressCreateDto correspondenceAddress);
     }
 
     public static interface OwnHouseStep {
@@ -287,7 +263,7 @@ public class Account {
     }
 
     public static interface BuildStep {
-        Account build();
+        AccountCreateDto build();
     }
 
 
@@ -305,8 +281,8 @@ public class Account {
         private String qualification;
         private String occupation;
         private Long income;
-        private Address residenceAddress;
-        private Address correspondenceAddress;
+        private AddressCreateDto residenceAddress;
+        private AddressCreateDto correspondenceAddress;
         private boolean ownHouse;
         private boolean onlyChild;
         private String details;
@@ -314,7 +290,7 @@ public class Account {
         private Builder() {
         }
 
-        public static NameStep account() {
+        public static NameStep accountCreateDto() {
             return new Builder();
         }
 
@@ -397,13 +373,13 @@ public class Account {
         }
 
         @Override
-        public CorrespondenceAddressStep withResidenceAddress(Address residenceAddress) {
+        public CorrespondenceAddressStep withResidenceAddress(AddressCreateDto residenceAddress) {
             this.residenceAddress = residenceAddress;
             return this;
         }
 
         @Override
-        public OwnHouseStep withCorrespondenceAddress(Address correspondenceAddress) {
+        public OwnHouseStep withCorrespondenceAddress(AddressCreateDto correspondenceAddress) {
             this.correspondenceAddress = correspondenceAddress;
             return this;
         }
@@ -427,8 +403,8 @@ public class Account {
         }
 
         @Override
-        public Account build() {
-            return new Account(
+        public AccountCreateDto build() {
+            return new AccountCreateDto(
                     this.name,
                     this.dob,
                     this.fathersName,

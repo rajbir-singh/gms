@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBoot2JPAWithHibernateAndH2Application implements CommandLineRunner {
+public class GmsRunner implements CommandLineRunner {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -18,7 +18,7 @@ public class SpringBoot2JPAWithHibernateAndH2Application implements CommandLineR
 	AccountRepository repository;
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBoot2JPAWithHibernateAndH2Application.class, args);
+		SpringApplication.run(GmsRunner.class, args);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class SpringBoot2JPAWithHibernateAndH2Application implements CommandLineR
 		logger.info("count -> {}", repository.count());
 		logger.info("Student id 10001 -> {}", repository.findById(1L));
 
-		logger.info("Inserting -> {}", repository.save(new Account("singh")));
+//		logger.info("Inserting -> {}", repository.save(new Account("singh")));
 
 //		logger.info("Update 10003 -> {}", repository.save(new Student(10001L, "Name-Updated", "New-Passport")));
 
