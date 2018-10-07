@@ -1,14 +1,64 @@
 package com.gms.domain;
 
-import com.gms.enums.State;
+import com.gms.dto.AccountNameDto;
 
 import javax.persistence.*;
-import java.util.List;
+//select accountId, name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, height, weight, qualification, occupation, income, ownHouse, onlyChild, details from account
+@NamedNativeQuery(name = "AccountNameQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountNameMapping", query = "select a.accountId, a.name, a.mobile1 from account a")
+@SqlResultSetMappings(
+        @SqlResultSetMapping(
+        name = "AccountNameMapping",
+        classes = {
+                @ConstructorResult(
+//                        targetClass = com.gms.domain.Account.class,
+                        targetClass = com.gms.dto.AccountNameDto.class,
+                        columns = {
+                                @ColumnResult(name = "account_Id", type = Long.class),
+                                @ColumnResult(name = "name"),
+                                @ColumnResult(name = "mobile1")
+                        }
+                )
+        }
+)
+)
+
+
+//@NamedNativeQuery(name = "AccountComplexQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountcomplexMapping", query = "select name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, qualification, occupation, details from account")
+//@SqlResultSetMapping(
+//        name = "AccountComplexMapping",
+//        classes = {
+//                @ConstructorResult(
+////                        targetClass = com.gms.domain.Account.class,
+//                        targetClass = AccountNameDto.class,
+//                        columns = {
+//                                @ColumnResult(name = "name"),
+////                                @ColumnResult(name = "accountId", type = Long.class),
+//                                @ColumnResult(name = "dob"),
+//                                @ColumnResult(name = "fathersName"),
+//                                @ColumnResult(name = "mothersName"),
+//                                @ColumnResult(name = "mobile1"),
+//                                @ColumnResult(name = "mobile2"),
+//                                @ColumnResult(name = "email1"),
+//                                @ColumnResult(name = "email2"),
+////                                @ColumnResult(name = "height", type = Double.class),
+////                                @ColumnResult(name = "weight", type = Double.class),
+//                                @ColumnResult(name = "qualification"),
+//                                @ColumnResult(name = "qualification"),
+////                                @ColumnResult(name = "income", type=Long.class),
+////                                @ColumnResult(name = "ownHouse", type = Boolean.class),
+////                        @ColumnResult(name = "onlyChild", type=Boolean.class),
+//                                @ColumnResult(name = "details")
+//                        }
+//                )
+//        }
+//)
 
 @Entity
+@Table(name ="account")
 public class Account {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "accountid")
     private Long accountId;
     private String name;
     private String dob;
@@ -18,26 +68,32 @@ public class Account {
     private String mobile2;
     private String email1;
     private String email2;
-    private double height;
-    private double weight;
+    private Double height;
+    private Double weight;
     private String qualification;
     private String occupation;
     private Long income;
 
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
+//    @JoinColumn(columnN = "resAddressId")
+//    @Column(name = "residenceAddressId")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-    private Address residenceAddress;
+    @JoinColumn(name = "residenceAddressId")
+    private Address residenceAddressId;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-    private Address correspondenceAddress;
+    @JoinColumn(name = "correspondenceAddressId")
+//    @Column(name = "correspondenceAddressId")
+    private Address correspondenceAddressId;
 
-    private boolean ownHouse;
-    private boolean onlyChild;
+    private Boolean ownHouse;
+    private Boolean onlyChild;
     private String details;
 
     public Account() {
     }
 
-    public Account(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, Address residenceAddress, Address correspondenceAddress, boolean ownHouse, boolean onlyChild, String details) {
+    public Account(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, Address residenceAddressId, Address correspondenceAddressId, boolean ownHouse, boolean onlyChild, String details) {
         this.name = name;
         this.dob = dob;
         this.fathersName = fathersName;
@@ -51,8 +107,8 @@ public class Account {
         this.qualification = qualification;
         this.occupation = occupation;
         this.income = income;
-        this.residenceAddress = residenceAddress;
-        this.correspondenceAddress = correspondenceAddress;
+        this.residenceAddressId = residenceAddressId;
+        this.correspondenceAddressId = correspondenceAddressId;
         this.ownHouse = ownHouse;
         this.onlyChild = onlyChild;
         this.details = details;
@@ -174,20 +230,20 @@ public class Account {
         this.income = income;
     }
 
-    public Address getResidenceAddress() {
-        return residenceAddress;
+    public Address getResidenceAddressId() {
+        return residenceAddressId;
     }
 
-    public void setResidenceAddress(Address residenceAddress) {
-        this.residenceAddress = residenceAddress;
+    public void setResidenceAddressId(Address residenceAddressId) {
+        this.residenceAddressId = residenceAddressId;
     }
 
-    public Address getCorrespondenceAddress() {
-        return correspondenceAddress;
+    public Address getCorrespondenceAddressId() {
+        return correspondenceAddressId;
     }
 
-    public void setCorrespondenceAddress(Address correspondenceAddress) {
-        this.correspondenceAddress = correspondenceAddress;
+    public void setCorrespondenceAddressId(Address correspondenceAddressId) {
+        this.correspondenceAddressId = correspondenceAddressId;
     }
 
     public boolean isOwnHouse() {

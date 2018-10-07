@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class AccountService {
+public class AccountService implements IArticleService {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -24,6 +24,10 @@ public class AccountService {
 
     @Autowired
     private AccountCreateDtoConverter accountCreateDtoConverter;
+
+//    public Account findName() {
+//        return accountRepository.findName();
+//    }
 
     public List<AccountListItemDto> findAll() {
         Iterable<Account> accounts = accountRepository.findAll();
@@ -64,5 +68,37 @@ public class AccountService {
         List<AccountListItemDto> accountListItemDtos = new ArrayList<>();
         accounts.forEach(user -> accountListItemDtos.add(accountListItemConverter.convertToDto(user)));
         return accountListItemDtos;
+
+//        @Autowired
+//        private ArticleRepository articleRepository;
+//        @Override
+//        public Article getArticleById(long articleId) {
+//            Article obj = articleRepository.findById(articleId).get();
+//            return obj;
+//        }
+//        @Override
+//        public List<Article> getAllArticles(){
+//            List<Article> list = new ArrayList<>();
+//            articleRepository.findAll().forEach(e -> list.add(e));
+//            return list;
+//        }
+//        @Override
+//        public synchronized boolean addArticle(Article article){
+//            List<Article> list = articleRepository.findByTitleAndCategory(article.getTitle(), article.getCategory());
+//            if (list.size() > 0) {
+//                return false;
+//            } else {
+//                articleRepository.save(article);
+//                return true;
+//            }
+//        }
+//        @Override
+//        public void updateArticle(Article article) {
+//            articleRepository.save(article);
+//        }
+//        @Override
+//        public void deleteArticle(int articleId) {
+//            articleRepository.delete(getArticleById(articleId));
+//        }
     }
 }

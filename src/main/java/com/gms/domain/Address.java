@@ -3,26 +3,26 @@ package com.gms.domain;
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "address")
 public class Address {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private String  addressId;
+    private Long  addressId;
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
     private String addressLine4;
     //TODO : crete city enums
     private String city;
+    @Enumerated(EnumType.STRING)
     private State state;
     private String pincode;
     private String country;
+    @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
     public Address() {
@@ -40,7 +40,7 @@ public class Address {
         this.addressType = addressType;
     }
 
-    public Address(String addressId, String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
+    public Address(Long addressId, String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
         this.addressId = addressId;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
@@ -53,11 +53,11 @@ public class Address {
         this.addressType = addressType;
     }
 
-    public String getAddressId() {
+    public Long getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(String addressId) {
+    public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
 
@@ -134,7 +134,7 @@ public class Address {
     }
 
     public static interface AddressIdStep {
-        AddressLine1Step withAddressId(String addressId);
+        AddressLine1Step withAddressId(Long addressId);
     }
 
     public static interface AddressLine1Step {
@@ -179,7 +179,7 @@ public class Address {
 
 
     public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, BuildStep {
-        private String addressId;
+        private Long addressId;
         private String addressLine1;
         private String addressLine2;
         private String addressLine3;
@@ -198,7 +198,7 @@ public class Address {
         }
 
         @Override
-        public AddressLine1Step withAddressId(String addressId) {
+        public AddressLine1Step withAddressId(Long addressId) {
             this.addressId = addressId;
             return this;
         }
