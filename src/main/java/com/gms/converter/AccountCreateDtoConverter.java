@@ -14,15 +14,22 @@ public class AccountCreateDtoConverter implements DtoConverter<Account, AccountC
 
     @Override
     public AccountCreateDto convertToDto(Account account) {
+
+        if (Utils.isEmptyObject(account)) {
+            return null;
+        }
+
         return null;
     }
 
+    //TODO : test how address is saved when it comes along with an accountCreateDto (both have ID yet to be generated!)
     @Override
     public Account convertFromDto(AccountCreateDto accountCreateDto) {
         if (Utils.isEmptyObject(accountCreateDto)) {
             return null;
         }
         return Account.Builder.account()
+                .withAccountId(accountCreateDto.getAccountId())
                 .withName(accountCreateDto.getName())
                 .withDob(accountCreateDto.getDob())
                 .withFathersName(accountCreateDto.getFathersName())
@@ -36,10 +43,9 @@ public class AccountCreateDtoConverter implements DtoConverter<Account, AccountC
                 .withQualification(accountCreateDto.getQualification())
                 .withOccupation(accountCreateDto.getOccupation())
                 .withIncome(accountCreateDto.getIncome())
-                .withResidenceAddress(addressCreateDtoConverter.convertFromDto(accountCreateDto.getResidenceAddress()))
-                .withCorrespondenceAddress(addressCreateDtoConverter.convertFromDto(accountCreateDto.getCorrespondenceAddress()))
-                .withOwnHouse(accountCreateDto.isOwnHouse())
-                .withOnlyChild(accountCreateDto.isOnlyChild())
+                .withAddresses(addressCreateDtoConverter.convertFromDtos(accountCreateDto.getAddresses()))
+                .withOwnHouse(accountCreateDto.getOwnHouse())
+                .withOnlyChild(accountCreateDto.getOnlyChild())
                 .withDetails(accountCreateDto.getDetails())
                 .build();
     }

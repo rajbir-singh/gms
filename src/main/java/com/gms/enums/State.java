@@ -42,4 +42,16 @@ public enum State {
     private State(String name) {
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
+
+//    public State fromName(String name) {
+//        for(State state : State.values()) {
+//            if(state.getName().equals(name)) {
+//                return state;
+//            }
+//        }
+//    }
 }

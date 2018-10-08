@@ -1,5 +1,7 @@
 package com.gms.domain;
 
+import com.gms.attributeConverter.AddressTypeEAConverter;
+import com.gms.attributeConverter.StateEAConverter;
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
 
@@ -18,12 +20,18 @@ public class Address {
     private String addressLine4;
     //TODO : crete city enums
     private String city;
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
+    @Convert(converter = StateEAConverter.class)
     private State state;
     private String pincode;
     private String country;
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
+    @Convert(converter = AddressTypeEAConverter.class)
     private AddressType addressType;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_accountId")
+    private Account account;
 
     public Address() {
     }

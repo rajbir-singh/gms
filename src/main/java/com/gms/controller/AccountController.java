@@ -1,17 +1,26 @@
 package com.gms.controller;
 
+import com.gms.dto.AccountCreateDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.service.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Controller
 @RequestMapping(path = "/account")
-public class AccountController {
+public class AccountController extends BaseController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private AccountService accountService;
 
@@ -28,9 +37,29 @@ public class AccountController {
 //        return "Saved";
 //    }
 
+    //TODO : write tests that check attribute level validations
+    @PostMapping(path = "add", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity addAccount(@Valid @RequestParam AccountCreateDto accountCreateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.info("AccountCreateDto is not valid");
+            return null;
+        }
+        return ok(newRestResponse(accountService.saveAccount(accountCreateDto)));
+    }
+
+    @PostMapping(path = "update", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity updateAccount(@Valid @RequestParam AccountCreateDto accountCreateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.info("AccountCreateDto is not valid");
+            return null;
+        }
+        return ok(newRestResponse(accountService.saveAccount(accountCreateDto)));
+    }
+
+    //TODO : make this paginated
     @GetMapping(path = "/all")
-    public @ResponseBody
-    Iterable<AccountListItemDto> getAllAccounts() {
+    @ResponseBody
+    public Iterable<AccountListItemDto> getAllAccounts() {
         // This returns a JSON or XML with the users
         return accountService.findAll();
     }

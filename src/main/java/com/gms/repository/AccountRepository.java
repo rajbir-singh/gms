@@ -10,16 +10,16 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.NamedNativeQuery;
 import java.util.List;
-
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long> {
+
 //    List<Account> findAll();
-
     Account findByAccountId(String accountId);
-
 
     @Query(name="AccountNameQuery", nativeQuery = true)
     List<AccountNameDto> findName();
+
+
 
 //    @Query(name="AccountComplexQuery", nativeQuery = true)
 //    AccountNameDto findDetail();

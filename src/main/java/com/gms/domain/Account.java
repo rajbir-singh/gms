@@ -3,6 +3,8 @@ package com.gms.domain;
 import com.gms.dto.AccountNameDto;
 
 import javax.persistence.*;
+import java.util.List;
+
 //select accountId, name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, height, weight, qualification, occupation, income, ownHouse, onlyChild, details from account
 @NamedNativeQuery(name = "AccountNameQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountNameMapping", query = "select a.accountId, a.name, a.mobile1 from account a")
 @SqlResultSetMappings(
@@ -76,15 +78,14 @@ public class Account {
 
 //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
 //    @JoinColumn(columnN = "resAddressId")
-//    @Column(name = "residenceAddressId")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-    @JoinColumn(name = "residenceAddressId")
-    private Address residenceAddressId;
+//    @Column(name = "residenceAddress")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class, mappedBy = "account")
+    private List<Address> addresses;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-    @JoinColumn(name = "correspondenceAddressId")
-//    @Column(name = "correspondenceAddressId")
-    private Address correspondenceAddressId;
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
+//    @JoinColumn(name = "correspondenceAddressId")
+////    @Column(name = "workAddress")
+//    private Address workAddress;
 
     private Boolean ownHouse;
     private Boolean onlyChild;
@@ -93,7 +94,8 @@ public class Account {
     public Account() {
     }
 
-    public Account(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, Address residenceAddressId, Address correspondenceAddressId, boolean ownHouse, boolean onlyChild, String details) {
+    public Account(Long accountId, String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, Double height, Double weight, String qualification, String occupation, Long income, List<Address> addresses, Boolean ownHouse, Boolean onlyChild, String details) {
+        this.accountId = accountId;
         this.name = name;
         this.dob = dob;
         this.fathersName = fathersName;
@@ -107,15 +109,10 @@ public class Account {
         this.qualification = qualification;
         this.occupation = occupation;
         this.income = income;
-        this.residenceAddressId = residenceAddressId;
-        this.correspondenceAddressId = correspondenceAddressId;
+        this.addresses = addresses;
         this.ownHouse = ownHouse;
         this.onlyChild = onlyChild;
         this.details = details;
-    }
-
-    public Account(String name) {
-        this.name = name;
     }
 
     public Long getAccountId() {
@@ -190,19 +187,19 @@ public class Account {
         this.email2 = email2;
     }
 
-    public double getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -230,35 +227,27 @@ public class Account {
         this.income = income;
     }
 
-    public Address getResidenceAddressId() {
-        return residenceAddressId;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setResidenceAddressId(Address residenceAddressId) {
-        this.residenceAddressId = residenceAddressId;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
-    public Address getCorrespondenceAddressId() {
-        return correspondenceAddressId;
-    }
-
-    public void setCorrespondenceAddressId(Address correspondenceAddressId) {
-        this.correspondenceAddressId = correspondenceAddressId;
-    }
-
-    public boolean isOwnHouse() {
+    public Boolean getOwnHouse() {
         return ownHouse;
     }
 
-    public void setOwnHouse(boolean ownHouse) {
+    public void setOwnHouse(Boolean ownHouse) {
         this.ownHouse = ownHouse;
     }
 
-    public boolean isOnlyChild() {
+    public Boolean getOnlyChild() {
         return onlyChild;
     }
 
-    public void setOnlyChild(boolean onlyChild) {
+    public void setOnlyChild(Boolean onlyChild) {
         this.onlyChild = onlyChild;
     }
 
@@ -268,6 +257,10 @@ public class Account {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public static interface AccountIdStep {
+        NameStep withAccountId(Long accountId);
     }
 
     public static interface NameStep {
@@ -303,11 +296,11 @@ public class Account {
     }
 
     public static interface HeightStep {
-        WeightStep withHeight(double height);
+        WeightStep withHeight(Double height);
     }
 
     public static interface WeightStep {
-        QualificationStep withWeight(double weight);
+        QualificationStep withWeight(Double weight);
     }
 
     public static interface QualificationStep {
@@ -319,23 +312,19 @@ public class Account {
     }
 
     public static interface IncomeStep {
-        ResidenceAddressStep withIncome(Long income);
+        AddressesStep withIncome(Long income);
     }
 
-    public static interface ResidenceAddressStep {
-        CorrespondenceAddressStep withResidenceAddress(Address residenceAddress);
-    }
-
-    public static interface CorrespondenceAddressStep {
-        OwnHouseStep withCorrespondenceAddress(Address correspondenceAddress);
+    public static interface AddressesStep {
+        OwnHouseStep withAddresses(List<Address> addresses);
     }
 
     public static interface OwnHouseStep {
-        OnlyChildStep withOwnHouse(boolean ownHouse);
+        OnlyChildStep withOwnHouse(Boolean ownHouse);
     }
 
     public static interface OnlyChildStep {
-        DetailsStep withOnlyChild(boolean onlyChild);
+        DetailsStep withOnlyChild(Boolean onlyChild);
     }
 
     public static interface DetailsStep {
@@ -346,8 +335,8 @@ public class Account {
         Account build();
     }
 
-
-    public static class Builder implements NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, ResidenceAddressStep, CorrespondenceAddressStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
+    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
+        private Long accountId;
         private String name;
         private String dob;
         private String fathersName;
@@ -356,22 +345,27 @@ public class Account {
         private String mobile2;
         private String email1;
         private String email2;
-        private double height;
-        private double weight;
+        private Double height;
+        private Double weight;
         private String qualification;
         private String occupation;
         private Long income;
-        private Address residenceAddress;
-        private Address correspondenceAddress;
-        private boolean ownHouse;
-        private boolean onlyChild;
+        private List<Address> addresses;
+        private Boolean ownHouse;
+        private Boolean onlyChild;
         private String details;
 
         private Builder() {
         }
 
-        public static NameStep account() {
+        public static AccountIdStep account() {
             return new Builder();
+        }
+
+        @Override
+        public NameStep withAccountId(Long accountId) {
+            this.accountId = accountId;
+            return this;
         }
 
         @Override
@@ -423,13 +417,13 @@ public class Account {
         }
 
         @Override
-        public WeightStep withHeight(double height) {
+        public WeightStep withHeight(Double height) {
             this.height = height;
             return this;
         }
 
         @Override
-        public QualificationStep withWeight(double weight) {
+        public QualificationStep withWeight(Double weight) {
             this.weight = weight;
             return this;
         }
@@ -447,31 +441,25 @@ public class Account {
         }
 
         @Override
-        public ResidenceAddressStep withIncome(Long income) {
+        public AddressesStep withIncome(Long income) {
             this.income = income;
             return this;
         }
 
         @Override
-        public CorrespondenceAddressStep withResidenceAddress(Address residenceAddress) {
-            this.residenceAddress = residenceAddress;
+        public OwnHouseStep withAddresses(List<Address> addresses) {
+            this.addresses = addresses;
             return this;
         }
 
         @Override
-        public OwnHouseStep withCorrespondenceAddress(Address correspondenceAddress) {
-            this.correspondenceAddress = correspondenceAddress;
-            return this;
-        }
-
-        @Override
-        public OnlyChildStep withOwnHouse(boolean ownHouse) {
+        public OnlyChildStep withOwnHouse(Boolean ownHouse) {
             this.ownHouse = ownHouse;
             return this;
         }
 
         @Override
-        public DetailsStep withOnlyChild(boolean onlyChild) {
+        public DetailsStep withOnlyChild(Boolean onlyChild) {
             this.onlyChild = onlyChild;
             return this;
         }
@@ -485,6 +473,7 @@ public class Account {
         @Override
         public Account build() {
             return new Account(
+                    this.accountId,
                     this.name,
                     this.dob,
                     this.fathersName,
@@ -498,8 +487,7 @@ public class Account {
                     this.qualification,
                     this.occupation,
                     this.income,
-                    this.residenceAddress,
-                    this.correspondenceAddress,
+                    this.addresses,
                     this.ownHouse,
                     this.onlyChild,
                     this.details

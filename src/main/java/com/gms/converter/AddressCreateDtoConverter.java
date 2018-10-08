@@ -5,6 +5,10 @@ import com.gms.dto.AddressCreateDto;
 import com.gms.service.Utils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Component
 public class AddressCreateDtoConverter implements DtoConverter<Address, AddressCreateDto> {
     @Override
@@ -28,5 +32,14 @@ public class AddressCreateDtoConverter implements DtoConverter<Address, AddressC
                 .withCountry(addressCreateDto.getCountry())
                 .withAddressType(addressCreateDto.getAddressType())
                 .build();
+    }
+
+    public List<Address> convertFromDtos(List<AddressCreateDto> addressCreateDtos) {
+        if (Utils.isNonEmptyList(addressCreateDtos)) {
+            return Collections.emptyList();
+        }
+        List<Address> addresses = new ArrayList<>();
+        addressCreateDtos.forEach(addressCreateDto -> addresses.add(convertFromDto(addressCreateDto)));
+        return addresses;
     }
 }

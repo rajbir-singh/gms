@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class AccountService implements IArticleService {
+public class AccountService implements IAccountService {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -29,6 +29,7 @@ public class AccountService implements IArticleService {
 //        return accountRepository.findName();
 //    }
 
+    @Override
     public List<AccountListItemDto> findAll() {
         Iterable<Account> accounts = accountRepository.findAll();
 //        if (Utils.isEmptyList(accounts)) {
@@ -37,28 +38,19 @@ public class AccountService implements IArticleService {
         return getAccountListItemDtosFromAccountsList(accounts);
     }
 
+    public Account saveAccount(AccountCreateDto accountCreateDto) {
+        //TODO : throw better exception here
+        if(Utils.isEmptyObject(accountCreateDto)) {
+            throw new RuntimeException("Null AccountCreateDto found!");
+        }
+        Account account = accountCreateDtoConverter.convertFromDto(accountCreateDto);
+        return accountRepository.save(account);
+    }
+
+    @Override
     public Account findByUserId(String accountId) {
         return accountRepository.findByAccountId(accountId);
     }
-
-//    public Account updateUser(UserDto userDto) {
-//        if (Utils.isEmptyObject(userDto) || Utils.isEmptyObject(userDto.getUserId())) {
-//            return null;
-//        }
-//        return userRepository.save(userDtoConverter.convertFromDto(userDto));
-//    }
-
-//    public Account createUser(AccountCreateDto accountCreateDto) {
-//        if (Utils.isEmptyObject(accountCreateDto)) {
-//            return null;
-//        }
-//        Account account = accountCreateDtoConverter.convert(accountCreateDto);
-//        return accountRepository.save(account);
-//    }
-
-//    public List<User> searchByNameOrMobileOrEmail(String query) {
-//        return userRepository.findByNameContainingOrMobileContainingOrEmailContaining(query, query, query);
-//    }
 
     public List<AccountListItemDto> getAccountListItemDtosFromAccountsList(Iterable<Account> accounts) {
         //TODO: add empty list check for iterable

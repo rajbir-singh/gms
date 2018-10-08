@@ -1,7 +1,5 @@
 package com.gms.dto;
 
-import com.gms.enums.State;
-
 public class AccountListItemDto {
 
     private Long accountId;
@@ -11,15 +9,15 @@ public class AccountListItemDto {
     private String mothersName;
     private String mobile1;
     private String email1;
-    private double height;
-    private double weight;
+    private Double height;
+    private Double weight;
     private String qualification;
     private Long income;
 
     public AccountListItemDto() {
     }
 
-    public AccountListItemDto(Long accountId, String name, String dob, String fathersName, String mothersName, String mobile1, String email1, double height, double weight, String qualification, Long income) {
+    public AccountListItemDto(Long accountId, String name, String dob, String fathersName, String mothersName, String mobile1, String email1, Double height, Double weight, String qualification, Long income) {
         this.accountId = accountId;
         this.name = name;
         this.dob = dob;
@@ -89,19 +87,19 @@ public class AccountListItemDto {
         this.email1 = email1;
     }
 
-    public double getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -150,11 +148,11 @@ public class AccountListItemDto {
     }
 
     public static interface HeightStep {
-        WeightStep withHeight(double height);
+        WeightStep withHeight(Double height);
     }
 
     public static interface WeightStep {
-        QualificationStep withWeight(double weight);
+        QualificationStep withWeight(Double weight);
     }
 
     public static interface QualificationStep {
@@ -178,8 +176,8 @@ public class AccountListItemDto {
         private String mothersName;
         private String mobile1;
         private String email1;
-        private double height;
-        private double weight;
+        private Double height;
+        private Double weight;
         private String qualification;
         private Long income;
 
@@ -233,13 +231,13 @@ public class AccountListItemDto {
         }
 
         @Override
-        public WeightStep withHeight(double height) {
+        public WeightStep withHeight(Double height) {
             this.height = height;
             return this;
         }
 
         @Override
-        public QualificationStep withWeight(double weight) {
+        public QualificationStep withWeight(Double weight) {
             this.weight = weight;
             return this;
         }

@@ -1,31 +1,65 @@
 package com.gms.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
+import java.util.List;
+
 public class AccountCreateDto {
 
+    //this field is null in payload if account is to be created, else if it is to be updated then its the Id of the account to be updated
+    private Long accountId;
+
+    @NotNull @Size( min = 4) @NotEmpty
     private String name;
+
+    @DateTimeFormat(pattern="MM/dd/yyyy")
+//    @NotNull @Past
     private String dob;
+
+//    @NotNull @Size( min = 4) @NotEmpty
     private String fathersName;
+
+//    @NotNull @Size( min = 4) @NotEmpty
     private String mothersName;
+
+//    @Mobile @Notnull @NotEmpty
     private String mobile1;
+
+//    @Mobile
     private String mobile2;
+
+//    @Email @Notnull @NotEmpty
     private String email1;
+
+//    @Email
     private String email2;
-    private double height;
-    private double weight;
+
+    private Double height;
+
+    private Double weight;
+
     private String qualification;
+
     private String occupation;
+
     private Long income;
-    private AddressCreateDto residenceAddress;
-    private AddressCreateDto correspondenceAddress;
-    private boolean ownHouse;
-    private boolean onlyChild;
+
+    @NotNull
+    private List<AddressCreateDto> addresses;
+
+    private Boolean ownHouse;
+
+    private Boolean onlyChild;
+
     private String details;
 
     public AccountCreateDto() {
 
     }
 
-    public AccountCreateDto(String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, double height, double weight, String qualification, String occupation, Long income, AddressCreateDto residenceAddress, AddressCreateDto correspondenceAddress, boolean ownHouse, boolean onlyChild, String details) {
+    public AccountCreateDto(Long accountId, @NotNull @Size(min = 4) @NotEmpty String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, Double height, Double weight, String qualification, String occupation, Long income, @NotNull List<AddressCreateDto> addresses, Boolean ownHouse, Boolean onlyChild, String details) {
+        this.accountId = accountId;
         this.name = name;
         this.dob = dob;
         this.fathersName = fathersName;
@@ -39,11 +73,18 @@ public class AccountCreateDto {
         this.qualification = qualification;
         this.occupation = occupation;
         this.income = income;
-        this.residenceAddress = residenceAddress;
-        this.correspondenceAddress = correspondenceAddress;
+        this.addresses = addresses;
         this.ownHouse = ownHouse;
         this.onlyChild = onlyChild;
         this.details = details;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public String getName() {
@@ -110,19 +151,19 @@ public class AccountCreateDto {
         this.email2 = email2;
     }
 
-    public double getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -150,35 +191,27 @@ public class AccountCreateDto {
         this.income = income;
     }
 
-    public AddressCreateDto getResidenceAddress() {
-        return residenceAddress;
+    public List<AddressCreateDto> getAddresses() {
+        return addresses;
     }
 
-    public void setResidenceAddress(AddressCreateDto residenceAddress) {
-        this.residenceAddress = residenceAddress;
+    public void setAddresses(List<AddressCreateDto> addresses) {
+        this.addresses = addresses;
     }
 
-    public AddressCreateDto getCorrespondenceAddress() {
-        return correspondenceAddress;
-    }
-
-    public void setCorrespondenceAddress(AddressCreateDto correspondenceAddress) {
-        this.correspondenceAddress = correspondenceAddress;
-    }
-
-    public boolean isOwnHouse() {
+    public Boolean getOwnHouse() {
         return ownHouse;
     }
 
-    public void setOwnHouse(boolean ownHouse) {
+    public void setOwnHouse(Boolean ownHouse) {
         this.ownHouse = ownHouse;
     }
 
-    public boolean isOnlyChild() {
+    public Boolean getOnlyChild() {
         return onlyChild;
     }
 
-    public void setOnlyChild(boolean onlyChild) {
+    public void setOnlyChild(Boolean onlyChild) {
         this.onlyChild = onlyChild;
     }
 
@@ -188,6 +221,10 @@ public class AccountCreateDto {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public static interface AccountIdStep {
+        NameStep withAccountId(Long accountId);
     }
 
     public static interface NameStep {
@@ -223,11 +260,11 @@ public class AccountCreateDto {
     }
 
     public static interface HeightStep {
-        WeightStep withHeight(double height);
+        WeightStep withHeight(Double height);
     }
 
     public static interface WeightStep {
-        QualificationStep withWeight(double weight);
+        QualificationStep withWeight(Double weight);
     }
 
     public static interface QualificationStep {
@@ -239,23 +276,19 @@ public class AccountCreateDto {
     }
 
     public static interface IncomeStep {
-        ResidenceAddressStep withIncome(Long income);
+        AddressesStep withIncome(Long income);
     }
 
-    public static interface ResidenceAddressStep {
-        CorrespondenceAddressStep withResidenceAddress(AddressCreateDto residenceAddress);
-    }
-
-    public static interface CorrespondenceAddressStep {
-        OwnHouseStep withCorrespondenceAddress(AddressCreateDto correspondenceAddress);
+    public static interface AddressesStep {
+        OwnHouseStep withAddresses(List<AddressCreateDto> addresses);
     }
 
     public static interface OwnHouseStep {
-        OnlyChildStep withOwnHouse(boolean ownHouse);
+        OnlyChildStep withOwnHouse(Boolean ownHouse);
     }
 
     public static interface OnlyChildStep {
-        DetailsStep withOnlyChild(boolean onlyChild);
+        DetailsStep withOnlyChild(Boolean onlyChild);
     }
 
     public static interface DetailsStep {
@@ -267,7 +300,8 @@ public class AccountCreateDto {
     }
 
 
-    public static class Builder implements NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, ResidenceAddressStep, CorrespondenceAddressStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
+    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
+        private Long accountId;
         private String name;
         private String dob;
         private String fathersName;
@@ -276,22 +310,27 @@ public class AccountCreateDto {
         private String mobile2;
         private String email1;
         private String email2;
-        private double height;
-        private double weight;
+        private Double height;
+        private Double weight;
         private String qualification;
         private String occupation;
         private Long income;
-        private AddressCreateDto residenceAddress;
-        private AddressCreateDto correspondenceAddress;
-        private boolean ownHouse;
-        private boolean onlyChild;
+        private List<AddressCreateDto> addresses;
+        private Boolean ownHouse;
+        private Boolean onlyChild;
         private String details;
 
         private Builder() {
         }
 
-        public static NameStep accountCreateDto() {
+        public static AccountIdStep accountCreateDto() {
             return new Builder();
+        }
+
+        @Override
+        public NameStep withAccountId(Long accountId) {
+            this.accountId = accountId;
+            return this;
         }
 
         @Override
@@ -343,13 +382,13 @@ public class AccountCreateDto {
         }
 
         @Override
-        public WeightStep withHeight(double height) {
+        public WeightStep withHeight(Double height) {
             this.height = height;
             return this;
         }
 
         @Override
-        public QualificationStep withWeight(double weight) {
+        public QualificationStep withWeight(Double weight) {
             this.weight = weight;
             return this;
         }
@@ -367,31 +406,25 @@ public class AccountCreateDto {
         }
 
         @Override
-        public ResidenceAddressStep withIncome(Long income) {
+        public AddressesStep withIncome(Long income) {
             this.income = income;
             return this;
         }
 
         @Override
-        public CorrespondenceAddressStep withResidenceAddress(AddressCreateDto residenceAddress) {
-            this.residenceAddress = residenceAddress;
+        public OwnHouseStep withAddresses(List<AddressCreateDto> addresses) {
+            this.addresses = addresses;
             return this;
         }
 
         @Override
-        public OwnHouseStep withCorrespondenceAddress(AddressCreateDto correspondenceAddress) {
-            this.correspondenceAddress = correspondenceAddress;
-            return this;
-        }
-
-        @Override
-        public OnlyChildStep withOwnHouse(boolean ownHouse) {
+        public OnlyChildStep withOwnHouse(Boolean ownHouse) {
             this.ownHouse = ownHouse;
             return this;
         }
 
         @Override
-        public DetailsStep withOnlyChild(boolean onlyChild) {
+        public DetailsStep withOnlyChild(Boolean onlyChild) {
             this.onlyChild = onlyChild;
             return this;
         }
@@ -405,6 +438,7 @@ public class AccountCreateDto {
         @Override
         public AccountCreateDto build() {
             return new AccountCreateDto(
+                    this.accountId,
                     this.name,
                     this.dob,
                     this.fathersName,
@@ -418,8 +452,7 @@ public class AccountCreateDto {
                     this.qualification,
                     this.occupation,
                     this.income,
-                    this.residenceAddress,
-                    this.correspondenceAddress,
+                    this.addresses,
                     this.ownHouse,
                     this.onlyChild,
                     this.details
