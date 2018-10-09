@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IAccountService {
     List<AccountListItemDto> findAll();
-    Account findByUserId(String accountId);
+    Account findByUserId(Long accountId);
 }

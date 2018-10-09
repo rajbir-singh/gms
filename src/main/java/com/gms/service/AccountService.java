@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -38,17 +37,36 @@ public class AccountService implements IAccountService {
         return getAccountListItemDtosFromAccountsList(accounts);
     }
 
-    public Account saveAccount(AccountCreateDto accountCreateDto) {
+    public Account saveAccount(Account account) {
         //TODO : throw better exception here
+        if(Utils.isEmptyObject(account)) {
+            throw new RuntimeException("Null AccountCreateDto found!");
+        }
+        return accountRepository.save(account);
+    }
+
+    public Account addAccount(AccountCreateDto accountCreateDto) {
         if(Utils.isEmptyObject(accountCreateDto)) {
             throw new RuntimeException("Null AccountCreateDto found!");
         }
         Account account = accountCreateDtoConverter.convertFromDto(accountCreateDto);
+        return this.saveAccount(account);
+    }
+
+    public Account updateAccount(Long accountId, AccountCreateDto accountCreateDto) {
+        //TODO : throw better exception here
+        if(Utils.isEmptyObject(accountCreateDto)) {
+            throw new RuntimeException("Null AccountCreateDto found!");
+        }
+        //TODO : throw apropriate exception here if account we're trying to update does'nt exist
+        Account account = accountRepository.findByAccountId(accountId);
+        accountCreateDto.setAccountId(account.getAccountId());
+        account = accountCreateDtoConverter.convertFromDto(accountCreateDto);
         return accountRepository.save(account);
     }
 
     @Override
-    public Account findByUserId(String accountId) {
+    public Account findByUserId(Long accountId) {
         return accountRepository.findByAccountId(accountId);
     }
 

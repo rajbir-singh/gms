@@ -14,7 +14,7 @@ import java.util.List;
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
 //    List<Account> findAll();
-    Account findByAccountId(String accountId);
+    Account findByAccountId(Long accountId);
 
     @Query(name="AccountNameQuery", nativeQuery = true)
     List<AccountNameDto> findName();

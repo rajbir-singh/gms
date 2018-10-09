@@ -1,5 +1,6 @@
 package com.gms.controller;
 
+import com.gms.domain.Account;
 import com.gms.dto.AccountCreateDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.service.AccountService;
@@ -12,11 +13,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Controller
-@RequestMapping(path = "/account")
+@RequestMapping(path = "/api/account")
 public class AccountController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -38,29 +43,29 @@ public class AccountController extends BaseController {
 //    }
 
     //TODO : write tests that check attribute level validations
-    @PostMapping(path = "add", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity addAccount(@Valid @RequestParam AccountCreateDto accountCreateDto, BindingResult bindingResult) {
+    @PutMapping(path = "add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             logger.info("AccountCreateDto is not valid");
             return null;
         }
-        return ok(newRestResponse(accountService.saveAccount(accountCreateDto)));
+        return ok(newRestResponse(accountService.addAccount(accountCreateDto)));
     }
 
-    @PostMapping(path = "update", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateAccount(@Valid @RequestParam AccountCreateDto accountCreateDto, BindingResult bindingResult) {
+    @PostMapping(path = "update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity updateAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult, @PathVariable(name = "employeeId") @NotNull @NotEmpty Long accountId) {
         if (bindingResult.hasErrors()) {
             logger.info("AccountCreateDto is not valid");
             return null;
         }
-        return ok(newRestResponse(accountService.saveAccount(accountCreateDto)));
+        return ok(accountService.updateAccount(accountId, accountCreateDto));
     }
 
     //TODO : make this paginated
     @GetMapping(path = "/all")
     @ResponseBody
-    public Iterable<AccountListItemDto> getAllAccounts() {
+    public ResponseEntity<RestResponse<List<Account>>> getAllAccounts() {
         // This returns a JSON or XML with the users
-        return accountService.findAll();
+        return ok(accountService.findAll());
     }
 }

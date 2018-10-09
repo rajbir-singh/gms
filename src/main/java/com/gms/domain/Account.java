@@ -1,6 +1,10 @@
 package com.gms.domain;
 
 import com.gms.dto.AccountNameDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -57,6 +61,9 @@ import java.util.List;
 
 @Entity
 @Table(name ="account")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -90,174 +97,6 @@ public class Account {
     private Boolean ownHouse;
     private Boolean onlyChild;
     private String details;
-
-    public Account() {
-    }
-
-    public Account(Long accountId, String name, String dob, String fathersName, String mothersName, String mobile1, String mobile2, String email1, String email2, Double height, Double weight, String qualification, String occupation, Long income, List<Address> addresses, Boolean ownHouse, Boolean onlyChild, String details) {
-        this.accountId = accountId;
-        this.name = name;
-        this.dob = dob;
-        this.fathersName = fathersName;
-        this.mothersName = mothersName;
-        this.mobile1 = mobile1;
-        this.mobile2 = mobile2;
-        this.email1 = email1;
-        this.email2 = email2;
-        this.height = height;
-        this.weight = weight;
-        this.qualification = qualification;
-        this.occupation = occupation;
-        this.income = income;
-        this.addresses = addresses;
-        this.ownHouse = ownHouse;
-        this.onlyChild = onlyChild;
-        this.details = details;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getFathersName() {
-        return fathersName;
-    }
-
-    public void setFathersName(String fathersName) {
-        this.fathersName = fathersName;
-    }
-
-    public String getMothersName() {
-        return mothersName;
-    }
-
-    public void setMothersName(String mothersName) {
-        this.mothersName = mothersName;
-    }
-
-    public String getMobile1() {
-        return mobile1;
-    }
-
-    public void setMobile1(String mobile1) {
-        this.mobile1 = mobile1;
-    }
-
-    public String getMobile2() {
-        return mobile2;
-    }
-
-    public void setMobile2(String mobile2) {
-        this.mobile2 = mobile2;
-    }
-
-    public String getEmail1() {
-        return email1;
-    }
-
-    public void setEmail1(String email1) {
-        this.email1 = email1;
-    }
-
-    public String getEmail2() {
-        return email2;
-    }
-
-    public void setEmail2(String email2) {
-        this.email2 = email2;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public String getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public Long getIncome() {
-        return income;
-    }
-
-    public void setIncome(Long income) {
-        this.income = income;
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public Boolean getOwnHouse() {
-        return ownHouse;
-    }
-
-    public void setOwnHouse(Boolean ownHouse) {
-        this.ownHouse = ownHouse;
-    }
-
-    public Boolean getOnlyChild() {
-        return onlyChild;
-    }
-
-    public void setOnlyChild(Boolean onlyChild) {
-        this.onlyChild = onlyChild;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
 
     public static interface AccountIdStep {
         NameStep withAccountId(Long accountId);
@@ -334,6 +173,7 @@ public class Account {
     public static interface BuildStep {
         Account build();
     }
+
 
     public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
         private Long accountId;
