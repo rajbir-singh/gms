@@ -1,14 +1,13 @@
 package com.gms;
 
-import com.gms.repository.AccountRepository;
 import com.gms.repository.AddressRepository;
+import com.gms.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //@EnableJpaRepositories("com.gms.accountRepository")
 @SpringBootApplication
@@ -17,7 +16,7 @@ public class GmsRunner implements CommandLineRunner {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	AccountRepository accountRepository;
+	AccountService accountService;
 
 	@Autowired
 	AddressRepository addressRepository;
@@ -29,6 +28,7 @@ public class GmsRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("Started GMS!");
+		logger.info("Account by id -> {}", accountService.findByAccountId(1L));
 
 //		logger.info("count -> {}", accountRepository.count());
 

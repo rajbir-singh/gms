@@ -2,7 +2,13 @@ package com.gms.dto;
 
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AddressCreateDto {
 
     private String addressLine1;
@@ -15,93 +21,8 @@ public class AddressCreateDto {
     private String pincode;
     private String country;
     private AddressType addressType;
-
-    public AddressCreateDto() {
-    }
-
-    public AddressCreateDto(String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.addressLine3 = addressLine3;
-        this.addressLine4 = addressLine4;
-        this.city = city;
-        this.state = state;
-        this.pincode = pincode;
-        this.country = country;
-        this.addressType = addressType;
-    }
-
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
-
-    public String getAddressLine3() {
-        return addressLine3;
-    }
-
-    public void setAddressLine3(String addressLine3) {
-        this.addressLine3 = addressLine3;
-    }
-
-    public String getAddressLine4() {
-        return addressLine4;
-    }
-
-    public void setAddressLine4(String addressLine4) {
-        this.addressLine4 = addressLine4;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public String getPincode() {
-        return pincode;
-    }
-
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public AddressType getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(AddressType addressType) {
-        this.addressType = addressType;
-    }
+    //will be null if address is created along with a new account, else this must be the accountId of the account to which this address belongs
+    private Long accountId;
 
     public static interface AddressLine1Step {
         AddressLine2Step withAddressLine1(String addressLine1);
@@ -136,7 +57,11 @@ public class AddressCreateDto {
     }
 
     public static interface AddressTypeStep {
-        BuildStep withAddressType(AddressType addressType);
+        AccountIdStep withAddressType(AddressType addressType);
+    }
+
+    public static interface AccountIdStep {
+        BuildStep withAccountId(Long accountId);
     }
 
     public static interface BuildStep {
@@ -144,7 +69,7 @@ public class AddressCreateDto {
     }
 
 
-    public static class Builder implements AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, BuildStep {
+    public static class Builder implements AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, AccountIdStep, BuildStep {
         private String addressLine1;
         private String addressLine2;
         private String addressLine3;
@@ -154,6 +79,7 @@ public class AddressCreateDto {
         private String pincode;
         private String country;
         private AddressType addressType;
+        private Long accountId;
 
         private Builder() {
         }
@@ -211,8 +137,14 @@ public class AddressCreateDto {
         }
 
         @Override
-        public BuildStep withAddressType(AddressType addressType) {
+        public AccountIdStep withAddressType(AddressType addressType) {
             this.addressType = addressType;
+            return this;
+        }
+
+        @Override
+        public BuildStep withAccountId(Long accountId) {
+            this.accountId = accountId;
             return this;
         }
 
@@ -227,7 +159,8 @@ public class AddressCreateDto {
                     this.state,
                     this.pincode,
                     this.country,
-                    this.addressType
+                    this.addressType,
+                    this.accountId
             );
         }
     }

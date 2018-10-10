@@ -1,5 +1,12 @@
 package com.gms.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountListItemDto {
 
     private Long accountId;
@@ -13,111 +20,6 @@ public class AccountListItemDto {
     private Double weight;
     private String qualification;
     private Long income;
-
-    public AccountListItemDto() {
-    }
-
-    public AccountListItemDto(Long accountId, String name, String dob, String fathersName, String mothersName, String mobile1, String email1, Double height, Double weight, String qualification, Long income) {
-        this.accountId = accountId;
-        this.name = name;
-        this.dob = dob;
-        this.fathersName = fathersName;
-        this.mothersName = mothersName;
-        this.mobile1 = mobile1;
-        this.email1 = email1;
-        this.height = height;
-        this.weight = weight;
-        this.qualification = qualification;
-        this.income = income;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getFathersName() {
-        return fathersName;
-    }
-
-    public void setFathersName(String fathersName) {
-        this.fathersName = fathersName;
-    }
-
-    public String getMothersName() {
-        return mothersName;
-    }
-
-    public void setMothersName(String mothersName) {
-        this.mothersName = mothersName;
-    }
-
-    public String getMobile1() {
-        return mobile1;
-    }
-
-    public void setMobile1(String mobile1) {
-        this.mobile1 = mobile1;
-    }
-
-    public String getEmail1() {
-        return email1;
-    }
-
-    public void setEmail1(String email1) {
-        this.email1 = email1;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public String getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public Long getIncome() {
-        return income;
-    }
-
-    public void setIncome(Long income) {
-        this.income = income;
-    }
 
     public static interface AccountIdStep {
         NameStep withAccountId(Long accountId);

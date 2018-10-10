@@ -1,6 +1,5 @@
 package com.gms.controller;
 
-import com.gms.domain.Account;
 import com.gms.dto.AccountCreateDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.service.AccountService;
@@ -67,7 +66,7 @@ public class AccountController extends BaseController {
         if(Utils.isEmptyObject(accountId)) {
             throw new RuntimeException("Empty account found!");
         }
-        return ok(accountService.findByUserId(accountId));
+        return ok(accountService.findByAccountId(accountId));
     }
 
     //TODO : make this paginated

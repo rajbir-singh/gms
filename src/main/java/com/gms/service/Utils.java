@@ -24,4 +24,12 @@ public class Utils {
     public static boolean isNonEmptyList(Object o) {
         return !isEmptyList(o);
     }
+
+    public static boolean isStrNullOrEmpty(String str) {
+        return str == null || str.isEmpty();
+    }
+
+    public static boolean isLongNullOrEmpty(Long lng) {
+        return lng == null || lng == 0;
+    }
 }

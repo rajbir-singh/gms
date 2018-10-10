@@ -66,7 +66,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account findByUserId(Long accountId) {
+    public Account findByAccountId(Long accountId) {
         return accountRepository.findByAccountId(accountId);
     }
 
