@@ -4,11 +4,17 @@ import com.gms.attributeConverter.AddressTypeEAConverter;
 import com.gms.attributeConverter.StateEAConverter;
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "address")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
 
     @Id
@@ -32,114 +38,6 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "fk_accountId")
     private Account account;
-
-    public Address() {
-    }
-
-    public Address(String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.addressLine3 = addressLine3;
-        this.addressLine4 = addressLine4;
-        this.city = city;
-        this.state = state;
-        this.pincode = pincode;
-        this.country = country;
-        this.addressType = addressType;
-    }
-
-    public Address(Long addressId, String addressLine1, String addressLine2, String addressLine3, String addressLine4, String city, State state, String pincode, String country, AddressType addressType) {
-        this.addressId = addressId;
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.addressLine3 = addressLine3;
-        this.addressLine4 = addressLine4;
-        this.city = city;
-        this.state = state;
-        this.pincode = pincode;
-        this.country = country;
-        this.addressType = addressType;
-    }
-
-    public Long getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
-    }
-
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
-
-    public String getAddressLine3() {
-        return addressLine3;
-    }
-
-    public void setAddressLine3(String addressLine3) {
-        this.addressLine3 = addressLine3;
-    }
-
-    public String getAddressLine4() {
-        return addressLine4;
-    }
-
-    public void setAddressLine4(String addressLine4) {
-        this.addressLine4 = addressLine4;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public String getPincode() {
-        return pincode;
-    }
-
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public AddressType getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(AddressType addressType) {
-        this.addressType = addressType;
-    }
 
     public static interface AddressIdStep {
         AddressLine1Step withAddressId(Long addressId);
@@ -178,7 +76,11 @@ public class Address {
     }
 
     public static interface AddressTypeStep {
-        BuildStep withAddressType(AddressType addressType);
+        AccountStep withAddressType(AddressType addressType);
+    }
+
+    public static interface AccountStep {
+        BuildStep withAccount(Account account);
     }
 
     public static interface BuildStep {
@@ -186,7 +88,7 @@ public class Address {
     }
 
 
-    public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, BuildStep {
+    public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, AccountStep, BuildStep {
         private Long addressId;
         private String addressLine1;
         private String addressLine2;
@@ -197,6 +99,7 @@ public class Address {
         private String pincode;
         private String country;
         private AddressType addressType;
+        private Account account;
 
         private Builder() {
         }
@@ -260,8 +163,14 @@ public class Address {
         }
 
         @Override
-        public BuildStep withAddressType(AddressType addressType) {
+        public AccountStep withAddressType(AddressType addressType) {
             this.addressType = addressType;
+            return this;
+        }
+
+        @Override
+        public BuildStep withAccount(Account account) {
+            this.account = account;
             return this;
         }
 
@@ -277,7 +186,8 @@ public class Address {
                     this.state,
                     this.pincode,
                     this.country,
-                    this.addressType
+                    this.addressType,
+                    this.account
             );
         }
     }
