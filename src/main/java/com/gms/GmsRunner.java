@@ -28,14 +28,15 @@ public class GmsRunner implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		logger.info("Started GMS!");
 
-		logger.info("count -> {}", accountRepository.count());
+//		logger.info("count -> {}", accountRepository.count());
 
-		logger.info("addresses -> {}", addressRepository.findAll());
+//		logger.info("addresses -> {}", addressRepository.findAll());
 
-		logger.info("name -> {}", accountRepository.findAll());
+//		logger.info("name -> {}", accountRepository.findAll());
 
-		logger.info("Student id 10001 -> {}", accountRepository.findById(1L));
+//		logger.info("Student id 10001 -> {}", accountRepository.findById(1L));
 
 //		logger.info("Inserting -> {}", accountRepository.save(new Account("singh")));
 
@@ -43,7 +44,7 @@ public class GmsRunner implements CommandLineRunner {
 
 //		accountRepository.deleteById(10002L);
 
-		logger.info("count -> {}", accountRepository.count());
-		logger.info("All users -> {}", accountRepository.findAll());
+//		logger.info("count -> {}", accountRepository.count());
+//		logger.info("All users -> {}", accountRepository.findAll());
 	}
 }

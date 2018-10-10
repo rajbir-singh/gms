@@ -4,6 +4,7 @@ import com.gms.domain.Account;
 import com.gms.dto.AccountCreateDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.service.AccountService;
+import com.gms.service.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,18 @@ public class AccountController extends BaseController {
         return ok(accountService.updateAccount(accountId, accountCreateDto));
     }
 
+    @GetMapping(value = "{accountId}", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestResponse<AccountListItemDto>> getAccountId(@PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) {
+        if(Utils.isEmptyObject(accountId)) {
+            throw new RuntimeException("Empty account found!");
+        }
+        return ok(accountService.findByUserId(accountId));
+    }
+
     //TODO : make this paginated
     @GetMapping(path = "/all")
     @ResponseBody
-    public ResponseEntity<RestResponse<List<Account>>> getAllAccounts() {
+    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts() {
         // This returns a JSON or XML with the users
         return ok(accountService.findAll());
     }
