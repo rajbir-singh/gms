@@ -65,7 +65,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
 //    @Column(name = "accountid")
     private Long accountId;
     private String name;

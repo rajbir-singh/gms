@@ -18,7 +18,8 @@ import javax.persistence.*;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
     private Long  addressId;
     private String addressLine1;
     private String addressLine2;
