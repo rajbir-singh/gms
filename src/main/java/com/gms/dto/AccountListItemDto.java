@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +13,7 @@ public class AccountListItemDto {
 
     private Long accountId;
     private String name;
-    private String dob;
+    private Date dob;
     private String fathersName;
     private String mothersName;
     private String mobile1;
@@ -30,7 +32,7 @@ public class AccountListItemDto {
     }
 
     public static interface DobStep {
-        FathersNameStep withDob(String dob);
+        FathersNameStep withDob(Date dob);
     }
 
     public static interface FathersNameStep {
@@ -73,7 +75,7 @@ public class AccountListItemDto {
     public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Email1Step, HeightStep, WeightStep, QualificationStep, IncomeStep, BuildStep {
         private Long accountId;
         private String name;
-        private String dob;
+        private Date dob;
         private String fathersName;
         private String mothersName;
         private String mobile1;
@@ -103,7 +105,7 @@ public class AccountListItemDto {
         }
 
         @Override
-        public FathersNameStep withDob(String dob) {
+        public FathersNameStep withDob(Date dob) {
             this.dob = dob;
             return this;
         }

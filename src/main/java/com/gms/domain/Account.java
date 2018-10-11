@@ -1,62 +1,12 @@
 package com.gms.domain;
 
-import com.gms.dto.AccountNameDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
-
-//select accountId, name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, height, weight, qualification, occupation, income, ownHouse, onlyChild, details from account
-@NamedNativeQuery(name = "AccountNameQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountNameMapping", query = "select a.accountId, a.name, a.mobile1 from account a")
-@SqlResultSetMappings(
-        @SqlResultSetMapping(
-        name = "AccountNameMapping",
-        classes = {
-                @ConstructorResult(
-//                        targetClass = com.gms.domain.Account.class,
-                        targetClass = com.gms.dto.AccountNameDto.class,
-                        columns = {
-                                @ColumnResult(name = "account_Id", type = Long.class),
-                                @ColumnResult(name = "name"),
-                                @ColumnResult(name = "mobile1")
-                        }
-                )
-        }
-)
-)
-
-
-//@NamedNativeQuery(name = "AccountComplexQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountcomplexMapping", query = "select name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, qualification, occupation, details from account")
-//@SqlResultSetMapping(
-//        name = "AccountComplexMapping",
-//        classes = {
-//                @ConstructorResult(
-////                        targetClass = com.gms.domain.Account.class,
-//                        targetClass = AccountNameDto.class,
-//                        columns = {
-//                                @ColumnResult(name = "name"),
-////                                @ColumnResult(name = "accountId", type = Long.class),
-//                                @ColumnResult(name = "dob"),
-//                                @ColumnResult(name = "fathersName"),
-//                                @ColumnResult(name = "mothersName"),
-//                                @ColumnResult(name = "mobile1"),
-//                                @ColumnResult(name = "mobile2"),
-//                                @ColumnResult(name = "email1"),
-//                                @ColumnResult(name = "email2"),
-////                                @ColumnResult(name = "height", type = Double.class),
-////                                @ColumnResult(name = "weight", type = Double.class),
-//                                @ColumnResult(name = "qualification"),
-//                                @ColumnResult(name = "qualification"),
-////                                @ColumnResult(name = "income", type=Long.class),
-////                                @ColumnResult(name = "ownHouse", type = Boolean.class),
-////                        @ColumnResult(name = "onlyChild", type=Boolean.class),
-//                                @ColumnResult(name = "details")
-//                        }
-//                )
-//        }
-//)
 
 @Entity
 @Table(name ="account")
@@ -70,7 +20,10 @@ public class Account {
 //    @Column(name = "accountid")
     private Long accountId;
     private String name;
-    private String dob;
+
+    @Temporal(TemporalType.DATE)
+    private Date dob;
+
     private String fathersName;
     private String mothersName;
     private String mobile1;
@@ -83,16 +36,8 @@ public class Account {
     private String occupation;
     private Long income;
 
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-//    @JoinColumn(columnN = "resAddressId")
-//    @Column(name = "residenceAddress")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class, mappedBy = "account")
     private List<Address> addresses;
-
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class)
-//    @JoinColumn(name = "correspondenceAddressId")
-////    @Column(name = "workAddress")
-//    private Address workAddress;
 
     private Boolean ownHouse;
     private Boolean onlyChild;
@@ -107,7 +52,7 @@ public class Account {
     }
 
     public static interface DobStep {
-        FathersNameStep withDob(String dob);
+        FathersNameStep withDob(Date dob);
     }
 
     public static interface FathersNameStep {
@@ -178,7 +123,7 @@ public class Account {
     public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
         private Long accountId;
         private String name;
-        private String dob;
+        private Date dob;
         private String fathersName;
         private String mothersName;
         private String mobile1;
@@ -215,7 +160,7 @@ public class Account {
         }
 
         @Override
-        public FathersNameStep withDob(String dob) {
+        public FathersNameStep withDob(Date dob) {
             this.dob = dob;
             return this;
         }
@@ -335,3 +280,54 @@ public class Account {
         }
     }
 }
+
+
+//select accountId, name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, height, weight, qualification, occupation, income, ownHouse, onlyChild, details from account
+//@NamedNativeQuery(name = "AccountNameQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountNameMapping", query = "select a.accountId, a.name, a.mobile1 from account a")
+//@SqlResultSetMappings(
+//        @SqlResultSetMapping(
+//        name = "AccountNameMapping",
+//        classes = {
+//                @ConstructorResult(
+////                        targetClass = com.gms.domain.Account.class,
+//                        targetClass = com.gms.dto.AccountNameDto.class,
+//                        columns = {
+//                                @ColumnResult(name = "account_Id", type = Long.class),
+//                                @ColumnResult(name = "name"),
+//                                @ColumnResult(name = "mobile1")
+//                        }
+//                )
+//        }
+//)
+//)
+
+
+//@NamedNativeQuery(name = "AccountComplexQuery", resultClass = AccountNameDto.class, resultSetMapping = "AccountcomplexMapping", query = "select name, dob, fathersName, mothersName, mobile1, mobile2, email1, email2, qualification, occupation, details from account")
+//@SqlResultSetMapping(
+//        name = "AccountComplexMapping",
+//        classes = {
+//                @ConstructorResult(
+////                        targetClass = com.gms.domain.Account.class,
+//                        targetClass = AccountNameDto.class,
+//                        columns = {
+//                                @ColumnResult(name = "name"),
+////                                @ColumnResult(name = "accountId", type = Long.class),
+//                                @ColumnResult(name = "dob"),
+//                                @ColumnResult(name = "fathersName"),
+//                                @ColumnResult(name = "mothersName"),
+//                                @ColumnResult(name = "mobile1"),
+//                                @ColumnResult(name = "mobile2"),
+//                                @ColumnResult(name = "email1"),
+//                                @ColumnResult(name = "email2"),
+////                                @ColumnResult(name = "height", type = Double.class),
+////                                @ColumnResult(name = "weight", type = Double.class),
+//                                @ColumnResult(name = "qualification"),
+//                                @ColumnResult(name = "qualification"),
+////                                @ColumnResult(name = "income", type=Long.class),
+////                                @ColumnResult(name = "ownHouse", type = Boolean.class),
+////                        @ColumnResult(name = "onlyChild", type=Boolean.class),
+//                                @ColumnResult(name = "details")
+//                        }
+//                )
+//        }
+//)

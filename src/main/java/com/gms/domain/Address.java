@@ -36,7 +36,8 @@ public class Address {
     @Convert(converter = AddressTypeEAConverter.class)
     private AddressType addressType;
 
-    @ManyToOne
+    //fetchType is EAGER by default, may cause n+1 problem more details here https://www.thoughts-on-java.org/best-practices-many-one-one-many-associations-mappings/ http://www.thoughts-on-java.org/free-n1_select_course/
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_accountId")
     private Account account;
 

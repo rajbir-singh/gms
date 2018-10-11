@@ -3,12 +3,10 @@ package com.gms.repository;
 //import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.gms.domain.Account;
-import com.gms.dto.AccountNameDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NamedNativeQuery;
 import java.util.List;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long> {
@@ -16,8 +14,8 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 //    List<Account> findAll();
     Account findByAccountId(Long accountId);
 
-    @Query(name="AccountNameQuery", nativeQuery = true)
-    List<AccountNameDto> findName();
+//    @Query(name="AccountNameQuery", nativeQuery = true)
+//    List<AccountNameDto> findName();
 
 
 
