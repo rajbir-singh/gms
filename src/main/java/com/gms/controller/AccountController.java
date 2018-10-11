@@ -53,7 +53,7 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping(path = "update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult, @PathVariable(name = "employeeId") @NotNull @NotEmpty Long accountId) {
+    public ResponseEntity updateAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult, @PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) {
         if (bindingResult.hasErrors()) {
             logger.info("AccountCreateDto is not valid");
             return null;
