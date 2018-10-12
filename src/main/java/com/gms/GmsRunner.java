@@ -28,7 +28,7 @@ public class GmsRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("Started GMS!");
-		logger.info("Account by id -> {}", accountService.findByAccountId(1L));
+//		logger.info("Account by id -> {}", accountService.findByAccountId(1L));
 
 //		logger.info("count -> {}", accountRepository.count());
 

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -17,7 +17,7 @@ public class AccountCreateDto {
     //this field is null in payload if account is to be created, else if it is to be updated then its the Id of the account to be updated
     private Long accountId;
 
-    @NotNull @Size( min = 4) @NotEmpty
+    @NotNull @Size( min = 4, message = "Name must be at least 4 chats long") @NotEmpty
     private String name;
 
 //    @NotNull @Past

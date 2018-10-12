@@ -3,10 +3,14 @@ package com.gms.service;
 import com.gms.converter.AccountCreateDtoConverter;
 import com.gms.converter.AccountListItemConverter;
 import com.gms.domain.Account;
+import com.gms.domain.Address;
 import com.gms.dto.AccountCreateDto;
 import com.gms.dto.AccountListItemDto;
+import com.gms.exception.ResourceNotFoundException;
 import com.gms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,9 +28,20 @@ public class AccountService implements IAccountService {
     @Autowired
     private AccountCreateDtoConverter accountCreateDtoConverter;
 
-//    public Account findName() {
-//        return accountRepository.findName();
-//    }
+    @Autowired
+    private AddressService addressService;
+
+
+    public Page<Account> findAll(Pageable pageable) {
+        return accountRepository.findAll(pageable);
+    }
+
+    public boolean existsById(Long accountId) throws ResourceNotFoundException {
+        if(!accountRepository.existsById(accountId)) {
+            throw new ResourceNotFoundException("AccountId: " + accountId + " not found");
+        }
+        return true;
+    }
 
     @Override
     public List<AccountListItemDto> findAll() {
@@ -37,6 +52,7 @@ public class AccountService implements IAccountService {
         return getAccountListItemDtosFromAccountsList(accounts);
     }
 
+    @Override
     public Account saveAccount(Account account) {
         //TODO : throw better exception here
         if(Utils.isEmptyObject(account)) {
@@ -45,29 +61,39 @@ public class AccountService implements IAccountService {
         return accountRepository.save(account);
     }
 
-    public Account addAccount(AccountCreateDto accountCreateDto) {
+    public Account addAccount(AccountCreateDto accountCreateDto) throws ResourceNotFoundException {
         if(Utils.isEmptyObject(accountCreateDto)) {
             throw new RuntimeException("Null AccountCreateDto found!");
         }
         Account account = accountCreateDtoConverter.convertFromDto(accountCreateDto);
-        return this.saveAccount(account);
+        account = this.saveAccount(account);
+        List<Address> addresses = account.getAddresses();
+        for(Address address: addresses) {
+            address.setAccount(account);
+            addressService.saveAddress(address);
+        }
+        return account;
     }
 
-    public Account updateAccount(Long accountId, AccountCreateDto accountCreateDto) {
+    public Account updateAccount(Long accountId, AccountCreateDto accountCreateDto) throws ResourceNotFoundException {
         //TODO : throw better exception here
         if(Utils.isEmptyObject(accountCreateDto)) {
             throw new RuntimeException("Null AccountCreateDto found!");
         }
-        //TODO : throw apropriate exception here if account we're trying to update does'nt exist
+
         Account account = accountRepository.findByAccountId(accountId);
         accountCreateDto.setAccountId(account.getAccountId());
         account = accountCreateDtoConverter.convertFromDto(accountCreateDto);
         return accountRepository.save(account);
     }
 
+    //TODO : trying changing Exception being thrown in existsById() to checked rather than checked (Runtime exc currently) and see if it helps in backtracking the function calls
     @Override
-    public Account findByAccountId(Long accountId) {
-        return accountRepository.findByAccountId(accountId);
+    public Account findByAccountId(Long accountId) throws ResourceNotFoundException {
+        if(existsById(accountId)) {
+            return accountRepository.findByAccountId(accountId);
+        }
+        return null;
     }
 
     public List<AccountListItemDto> getAccountListItemDtosFromAccountsList(Iterable<Account> accounts) {

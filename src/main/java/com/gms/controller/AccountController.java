@@ -2,6 +2,7 @@ package com.gms.controller;
 
 import com.gms.dto.AccountCreateDto;
 import com.gms.dto.AccountListItemDto;
+import com.gms.exception.ResourceNotFoundException;
 import com.gms.service.AccountService;
 import com.gms.service.Utils;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class AccountController extends BaseController {
 
     //TODO : write tests that check attribute level validations
     @PutMapping(path = "add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult) {
+    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult) throws ResourceNotFoundException {
         if (bindingResult.hasErrors()) {
             logger.info("AccountCreateDto is not valid");
             return null;
@@ -53,7 +54,7 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping(path = "update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult, @PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) {
+    public ResponseEntity updateAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult, @PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
         if (bindingResult.hasErrors()) {
             logger.info("AccountCreateDto is not valid");
             return null;
@@ -62,7 +63,7 @@ public class AccountController extends BaseController {
     }
 
     @GetMapping(value = "{accountId}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestResponse<AccountListItemDto>> getAccountId(@PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) {
+    public ResponseEntity<RestResponse<AccountListItemDto>> getAccountId(@PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
         if(Utils.isEmptyObject(accountId)) {
             throw new RuntimeException("Empty account found!");
         }

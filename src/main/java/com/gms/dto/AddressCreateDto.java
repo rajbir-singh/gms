@@ -1,10 +1,13 @@
 package com.gms.dto;
 
+import com.gms.attributeConverter.StateEAConverter;
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Convert;
 
 @Data
 @AllArgsConstructor
@@ -17,6 +20,7 @@ public class AddressCreateDto {
     private String addressLine4;
     //TODO : crete city enums
     private String city;
+    @Convert(converter = StateEAConverter.class)
     private State state;
     private String pincode;
     private String country;

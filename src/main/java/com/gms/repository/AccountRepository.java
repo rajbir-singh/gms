@@ -1,18 +1,21 @@
 package com.gms.repository;
 
-//import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.gms.domain.Account;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 @Repository
-public interface AccountRepository extends CrudRepository<Account, Long> {
+public interface AccountRepository extends JpaRepository<Account, Long> {
 
-//    List<Account> findAll();
+
+    //    List<Account> findAll();
     Account findByAccountId(Long accountId);
+
+//    Page<Account> findAll(Pageable pageable);
+
+    Page<Account> findByName(String name, Pageable pageable);
 
 //    @Query(name="AccountNameQuery", nativeQuery = true)
 //    List<AccountNameDto> findName();

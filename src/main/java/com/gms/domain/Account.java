@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,6 @@ public class Account {
     private Long accountId;
     private String name;
 
-    @Temporal(TemporalType.DATE)
     private Date dob;
 
     private String fathersName;

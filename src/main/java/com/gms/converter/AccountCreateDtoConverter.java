@@ -2,6 +2,7 @@ package com.gms.converter;
 
 import com.gms.domain.Account;
 import com.gms.dto.AccountCreateDto;
+import com.gms.exception.ResourceNotFoundException;
 import com.gms.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class AccountCreateDtoConverter implements DtoConverter<Account, AccountC
 
     //TODO : test how address is saved when it comes along with an accountCreateDto (both have ID yet to be generated!)
     @Override
-    public Account convertFromDto(AccountCreateDto accountCreateDto) {
+    public Account convertFromDto(AccountCreateDto accountCreateDto) throws ResourceNotFoundException {
         if (Utils.isEmptyObject(accountCreateDto)) {
             return null;
         }

@@ -3,6 +3,7 @@ package com.gms.converter;
 import com.gms.domain.Account;
 import com.gms.domain.Address;
 import com.gms.dto.AddressCreateDto;
+import com.gms.exception.ResourceNotFoundException;
 import com.gms.service.AccountService;
 import com.gms.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,14 @@ public class AddressCreateDtoConverter implements DtoConverter<Address, AddressC
     }
 
     @Override
-    public Address convertFromDto(AddressCreateDto addressCreateDto) {
-        if (Utils.isEmptyObject(addressCreateDto) || Utils.isLongNullOrEmpty(addressCreateDto.getAccountId())) {
+    public Address convertFromDto(AddressCreateDto addressCreateDto) throws ResourceNotFoundException {
+        if (Utils.isEmptyObject(addressCreateDto)) {
             throw new RuntimeException("Either AddressCreateDto or AccountId to which address belongs found null!");
         } else {
-            Account account = accountService.findByAccountId(addressCreateDto.getAccountId());
+            Account account = null;
+            if(!Utils.isLongNullOrEmpty(addressCreateDto.getAccountId())) {
+                account = accountService.findByAccountId(addressCreateDto.getAccountId());
+            }
             return Address.Builder.address()
                     .withAddressId(null)//TODO: make sure DB is generating id correctly
                     .withAddressLine1(addressCreateDto.getAddressLine1())
@@ -46,12 +50,14 @@ public class AddressCreateDtoConverter implements DtoConverter<Address, AddressC
     }
 
 
-    public List<Address> convertFromDtos(List<AddressCreateDto> addressCreateDtos) {
-        if (Utils.isNonEmptyList(addressCreateDtos)) {
+    public List<Address> convertFromDtos(List<AddressCreateDto> addressCreateDtos) throws ResourceNotFoundException {
+        if (Utils.isEmptyList(addressCreateDtos)) {
             return Collections.emptyList();
         }
         List<Address> addresses = new ArrayList<>();
-        addressCreateDtos.forEach(addressCreateDto -> addresses.add(convertFromDto(addressCreateDto)));
+        for(AddressCreateDto addressCreateDto : addressCreateDtos) {
+            addresses.add(convertFromDto(addressCreateDto));
+        }
         return addresses;
     }
 }
