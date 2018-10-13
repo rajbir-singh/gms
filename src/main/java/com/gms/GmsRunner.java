@@ -2,6 +2,7 @@ package com.gms;
 
 import com.gms.repository.AddressRepository;
 import com.gms.service.AccountService;
+import com.gms.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class GmsRunner implements CommandLineRunner {
 	AccountService accountService;
 
 	@Autowired
-	AddressRepository addressRepository;
+	AddressService addressService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(GmsRunner.class, args);
@@ -28,6 +29,8 @@ public class GmsRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("Started GMS!");
+		accountService.findAll();
+		addressService.findAll();
 //		logger.info("Account by id -> {}", accountService.findByAccountId(1L));
 
 //		logger.info("count -> {}", accountRepository.count());

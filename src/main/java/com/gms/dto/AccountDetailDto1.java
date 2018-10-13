@@ -1,63 +1,38 @@
 package com.gms.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class AccountCreateDto {
-
-    //this field is null in payload if account is to be created, else if it is to be updated then its the Id of the account to be updated
+@AllArgsConstructor
+public class AccountDetailDto1 {
     private Long accountId;
-
-    @NotNull @Size( min = 4, message = "Name must be at least 4 chats long") @NotEmpty
     private String name;
-
-//    @NotNull @Past
     private Date dob;
-
-//    @NotNull @Size( min = 4) @NotEmpty
     private String fathersName;
-
-//    @NotNull @Size( min = 4) @NotEmpty
     private String mothersName;
-
-//    @Mobile @Notnull @NotEmpty
     private String mobile1;
-
-//    @Mobile
     private String mobile2;
-
-//    @Email @Notnull @NotEmpty
     private String email1;
-
-//    @Email
     private String email2;
-
     private Double height;
-
     private Double weight;
-
     private String qualification;
-
     private String occupation;
-
     private Long income;
 
-//    @NotNull
-    private List<AddressCreateDto> addresses;
+    @JsonManagedReference
+    private List<AddressDetailDto1> addresses;
 
     private Boolean ownHouse;
-
     private Boolean onlyChild;
-
     private String details;
 
     public static interface AccountIdStep {
@@ -117,7 +92,7 @@ public class AccountCreateDto {
     }
 
     public static interface AddressesStep {
-        OwnHouseStep withAddresses(List<AddressCreateDto> addresses);
+        OwnHouseStep withAddresses(List<AddressDetailDto1> addresses);
     }
 
     public static interface OwnHouseStep {
@@ -133,8 +108,9 @@ public class AccountCreateDto {
     }
 
     public static interface BuildStep {
-        AccountCreateDto build();
+        AccountDetailDto1 build();
     }
+
 
     public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
         private Long accountId;
@@ -151,7 +127,7 @@ public class AccountCreateDto {
         private String qualification;
         private String occupation;
         private Long income;
-        private List<AddressCreateDto> addresses;
+        private List<AddressDetailDto1> addresses;
         private Boolean ownHouse;
         private Boolean onlyChild;
         private String details;
@@ -159,7 +135,7 @@ public class AccountCreateDto {
         private Builder() {
         }
 
-        public static AccountIdStep accountCreateDto() {
+        public static AccountIdStep accountDetailDto() {
             return new Builder();
         }
 
@@ -248,7 +224,7 @@ public class AccountCreateDto {
         }
 
         @Override
-        public OwnHouseStep withAddresses(List<AddressCreateDto> addresses) {
+        public OwnHouseStep withAddresses(List<AddressDetailDto1> addresses) {
             this.addresses = addresses;
             return this;
         }
@@ -272,8 +248,8 @@ public class AccountCreateDto {
         }
 
         @Override
-        public AccountCreateDto build() {
-            return new AccountCreateDto(
+        public AccountDetailDto1 build() {
+            return new AccountDetailDto1(
                     this.accountId,
                     this.name,
                     this.dob,

@@ -1,6 +1,9 @@
 package com.gms.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gms.attributeConverter.AddressTypeEAConverter;
 import com.gms.attributeConverter.StateEAConverter;
+import com.gms.domain.Account;
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
 import lombok.AllArgsConstructor;
@@ -9,24 +12,35 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Convert;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressCreateDto {
-
+public class AddressDetailDto1 {
+    private Long  addressId;
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
     private String addressLine4;
+
     //TODO : crete city enums
     private String city;
+
     @Convert(converter = StateEAConverter.class)
     private State state;
+
     private String pincode;
     private String country;
+
+    @Convert(converter = AddressTypeEAConverter.class)
     private AddressType addressType;
-    //will be null if address is created along with a new account, else this must be the accountId of the account to which this address belongs
-    private Long accountId;
+
+    @JsonIgnore
+    private Account account;
+
+    public static interface AddressIdStep {
+        AddressLine1Step withAddressId(Long addressId);
+    }
 
     public static interface AddressLine1Step {
         AddressLine2Step withAddressLine1(String addressLine1);
@@ -61,19 +75,20 @@ public class AddressCreateDto {
     }
 
     public static interface AddressTypeStep {
-        AccountIdStep withAddressType(AddressType addressType);
+        AccountStep withAddressType(AddressType addressType);
     }
 
-    public static interface AccountIdStep {
-        BuildStep withAccountId(Long accountId);
+    public static interface AccountStep {
+        BuildStep withAccount(Account account);
     }
 
     public static interface BuildStep {
-        AddressCreateDto build();
+        AddressDetailDto1 build();
     }
 
 
-    public static class Builder implements AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, AccountIdStep, BuildStep {
+    public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, AccountStep, BuildStep {
+        private Long addressId;
         private String addressLine1;
         private String addressLine2;
         private String addressLine3;
@@ -83,13 +98,19 @@ public class AddressCreateDto {
         private String pincode;
         private String country;
         private AddressType addressType;
-        private Long accountId;
+        private Account account;
 
         private Builder() {
         }
 
-        public static AddressLine1Step addressCreateDto() {
+        public static AddressIdStep addressDetailDto() {
             return new Builder();
+        }
+
+        @Override
+        public AddressLine1Step withAddressId(Long addressId) {
+            this.addressId = addressId;
+            return this;
         }
 
         @Override
@@ -141,20 +162,21 @@ public class AddressCreateDto {
         }
 
         @Override
-        public AccountIdStep withAddressType(AddressType addressType) {
+        public AccountStep withAddressType(AddressType addressType) {
             this.addressType = addressType;
             return this;
         }
 
         @Override
-        public BuildStep withAccountId(Long accountId) {
-            this.accountId = accountId;
+        public BuildStep withAccount(Account account) {
+            this.account = account;
             return this;
         }
 
         @Override
-        public AddressCreateDto build() {
-            return new AddressCreateDto(
+        public AddressDetailDto1 build() {
+            return new AddressDetailDto1(
+                    this.addressId,
                     this.addressLine1,
                     this.addressLine2,
                     this.addressLine3,
@@ -164,7 +186,7 @@ public class AddressCreateDto {
                     this.pincode,
                     this.country,
                     this.addressType,
-                    this.accountId
+                    this.account
             );
         }
     }

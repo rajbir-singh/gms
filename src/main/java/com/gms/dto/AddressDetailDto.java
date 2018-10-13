@@ -1,8 +1,5 @@
-package com.gms.domain;
+package com.gms.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gms.attributeConverter.AddressTypeEAConverter;
 import com.gms.attributeConverter.StateEAConverter;
 import com.gms.enums.AddressType;
 import com.gms.enums.State;
@@ -10,41 +7,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Convert;
 
-@Entity
-@Table(name = "address")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+@NoArgsConstructor
+public class AddressDetailDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long  addressId;
+    private Long addressId;
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
     private String addressLine4;
     //TODO : crete city enums
     private String city;
-//    @Enumerated(EnumType.STRING)
     @Convert(converter = StateEAConverter.class)
     private State state;
     private String pincode;
     private String country;
-//    @Enumerated(EnumType.STRING)
-
-    @Convert(converter = AddressTypeEAConverter.class)
     private AddressType addressType;
-
-    @JsonBackReference
-    //fetchType is EAGER by default, may cause n+1 problem more details here https://www.thoughts-on-java.org/best-practices-many-one-one-many-associations-mappings/ http://www.thoughts-on-java.org/free-n1_select_course/
-//    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_accountId")
-    private Account account;
+    //will be null if address is created along with a new account, else this must be the accountId of the account to which this address belongs
+    private Long accountId;
 
     public static interface AddressIdStep {
         AddressLine1Step withAddressId(Long addressId);
@@ -83,19 +66,18 @@ public class Address {
     }
 
     public static interface AddressTypeStep {
-        AccountStep withAddressType(AddressType addressType);
+        AccountIdStep withAddressType(AddressType addressType);
     }
 
-    public static interface AccountStep {
-        BuildStep withAccount(Account account);
+    public static interface AccountIdStep {
+        BuildStep withAccountId(Long accountId);
     }
 
     public static interface BuildStep {
-        Address build();
+        AddressDetailDto build();
     }
 
-
-    public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, AccountStep, BuildStep {
+    public static class Builder implements AddressIdStep, AddressLine1Step, AddressLine2Step, AddressLine3Step, AddressLine4Step, CityStep, StateStep, PincodeStep, CountryStep, AddressTypeStep, AccountIdStep, BuildStep {
         private Long addressId;
         private String addressLine1;
         private String addressLine2;
@@ -106,12 +88,12 @@ public class Address {
         private String pincode;
         private String country;
         private AddressType addressType;
-        private Account account;
+        private Long accountId;
 
         private Builder() {
         }
 
-        public static AddressIdStep address() {
+        public static AddressIdStep addressDetailDto() {
             return new Builder();
         }
 
@@ -170,20 +152,20 @@ public class Address {
         }
 
         @Override
-        public AccountStep withAddressType(AddressType addressType) {
+        public AccountIdStep withAddressType(AddressType addressType) {
             this.addressType = addressType;
             return this;
         }
 
         @Override
-        public BuildStep withAccount(Account account) {
-            this.account = account;
+        public BuildStep withAccountId(Long accountId) {
+            this.accountId = accountId;
             return this;
         }
 
         @Override
-        public Address build() {
-            return new Address(
+        public AddressDetailDto build() {
+            return new AddressDetailDto(
                     this.addressId,
                     this.addressLine1,
                     this.addressLine2,
@@ -194,7 +176,7 @@ public class Address {
                     this.pincode,
                     this.country,
                     this.addressType,
-                    this.account
+                    this.accountId
             );
         }
     }

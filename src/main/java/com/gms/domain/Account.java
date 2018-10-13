@@ -1,7 +1,9 @@
 package com.gms.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -35,6 +37,8 @@ public class Account {
     private String occupation;
     private Long income;
 
+    @JsonManagedReference
+//    @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class, mappedBy = "account")
     private List<Address> addresses;
 

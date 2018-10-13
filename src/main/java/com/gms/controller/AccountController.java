@@ -1,9 +1,10 @@
 package com.gms.controller;
 
-import com.gms.dto.AccountCreateDto;
+import com.gms.dto.AccountDetailDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.exception.ResourceNotFoundException;
 import com.gms.service.AccountService;
+import com.gms.service.AddressService;
 import com.gms.service.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,45 +31,37 @@ public class AccountController extends BaseController {
     @Autowired
     private AccountService accountService;
 
-//    @GetMapping(path = "/add")
-//    public @ResponseBody
-//    String addNewUser(@RequestParam String name, @RequestParam String email) {
-//        // @ResponseBody means the returned String is the response, not a view name
-//        // @RequestParam means it is a parameter from the GET or POST request
-//
-//        User n = new User();
-//        n.setName(name);
-//        n.setEmail(email);
-//        userRepository.save(n);
-//        return "Saved";
-//    }
+    @Autowired
+    private AddressService addressService;
 
     //TODO : write tests that check attribute level validations
     @PutMapping(path = "add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult) throws ResourceNotFoundException {
+    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountDetailDto accountDetailDto, BindingResult bindingResult) throws ResourceNotFoundException {
         if (bindingResult.hasErrors()) {
-            logger.info("AccountCreateDto is not valid");
+            logger.info("AccountDetailDto is not valid");
             return null;
         }
-        return ok(newRestResponse(accountService.addAccount(accountCreateDto)));
+        return ok(newRestResponse(accountService.addAccount(accountDetailDto)));
     }
 
-    @PostMapping(path = "update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateAccount(@Valid @NotNull @RequestBody AccountCreateDto accountCreateDto, BindingResult bindingResult, @PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
+    @PostMapping(path = "/update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestResponse<AccountDetailDto>> updateAccount(@Valid @NotNull @RequestBody AccountDetailDto accountDetailDto, BindingResult bindingResult, @PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
         if (bindingResult.hasErrors()) {
-            logger.info("AccountCreateDto is not valid");
+            logger.info("AccountDetailDto is not valid");
             return null;
         }
-        return ok(accountService.updateAccount(accountId, accountCreateDto));
+        return ok(accountService.updateAccount(accountId, accountDetailDto));
     }
 
     @GetMapping(value = "{accountId}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestResponse<AccountListItemDto>> getAccountId(@PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
-        if(Utils.isEmptyObject(accountId)) {
-            throw new RuntimeException("Empty account found!");
+    public ResponseEntity<RestResponse<AccountDetailDto>> getAccountId(@PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
+        if (Utils.isEmptyObject(accountId)) {
+            throw new RuntimeException("Empty accountId found!");
         }
-        return ok(accountService.findByAccountId(accountId));
+        return ok(accountService.getAccountDetailDtoByAccountId(accountId));
     }
+
+    /********************* PASSED PHASE ONE ***************************/
 
     //TODO : make this paginated
     @GetMapping(path = "/all")
@@ -77,4 +70,5 @@ public class AccountController extends BaseController {
         // This returns a JSON or XML with the users
         return ok(accountService.findAll());
     }
+
 }

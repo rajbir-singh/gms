@@ -1,5 +1,6 @@
 package com.gms.dto;
 
+import com.gms.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,8 @@ public class AccountListItemDto {
     private Double weight;
     private String qualification;
     private Long income;
+    private State state;
+    private String city;
 
     public static interface AccountIdStep {
         NameStep withAccountId(Long accountId);
@@ -64,15 +67,22 @@ public class AccountListItemDto {
     }
 
     public static interface IncomeStep {
-        BuildStep withIncome(Long income);
+        StateStep withIncome(Long income);
+    }
+
+    public static interface StateStep {
+        CityStep withState(State state);
+    }
+
+    public static interface CityStep {
+        BuildStep withCity(String city);
     }
 
     public static interface BuildStep {
         AccountListItemDto build();
     }
 
-
-    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Email1Step, HeightStep, WeightStep, QualificationStep, IncomeStep, BuildStep {
+    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Email1Step, HeightStep, WeightStep, QualificationStep, IncomeStep, StateStep, CityStep, BuildStep {
         private Long accountId;
         private String name;
         private Date dob;
@@ -84,6 +94,8 @@ public class AccountListItemDto {
         private Double weight;
         private String qualification;
         private Long income;
+        private State state;
+        private String city;
 
         private Builder() {
         }
@@ -153,8 +165,20 @@ public class AccountListItemDto {
         }
 
         @Override
-        public BuildStep withIncome(Long income) {
+        public StateStep withIncome(Long income) {
             this.income = income;
+            return this;
+        }
+
+        @Override
+        public CityStep withState(State state) {
+            this.state = state;
+            return this;
+        }
+
+        @Override
+        public BuildStep withCity(String city) {
+            this.city = city;
             return this;
         }
 
@@ -171,7 +195,9 @@ public class AccountListItemDto {
                     this.height,
                     this.weight,
                     this.qualification,
-                    this.income
+                    this.income,
+                    this.state,
+                    this.city
             );
         }
     }
