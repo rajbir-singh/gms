@@ -9,6 +9,7 @@ import com.gms.service.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -66,9 +67,9 @@ public class AccountController extends BaseController {
     //TODO : make this paginated
     @GetMapping(path = "/all")
     @ResponseBody
-    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts() {
+    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(Pageable pageable) {
         // This returns a JSON or XML with the users
-        return ok(accountService.findAll());
+        return ok(accountService.findAll(pageable));
     }
 
 }
