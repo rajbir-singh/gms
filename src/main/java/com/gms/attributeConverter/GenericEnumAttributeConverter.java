@@ -22,7 +22,8 @@ public abstract class GenericEnumAttributeConverter<J, D> implements AttributeCo
     @Override
     public D convertToDatabaseColumn(J javaObject) {
         if (Utils.isEmptyObject(javaObject)) {
-            throw new RuntimeException("Found null value for enum type variable"); //TODO: can i print the name of J class here
+//            throw new RuntimeException("Found null value for enum type variable"); //TODO: can i print the name of J class here
+            return null;
         }
         return map.get(javaObject);
     }
@@ -32,7 +33,8 @@ public abstract class GenericEnumAttributeConverter<J, D> implements AttributeCo
 
         J javaObject = map.inverse().get(dbData);
         if (Utils.isEmptyObject(javaObject)) {
-            throw new IllegalArgumentException("Unknown [" + dbData + "]");
+//            throw new IllegalArgumentException("Unknown [" + dbData + "]");
+            return null;
         }
         return javaObject;
     }

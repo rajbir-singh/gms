@@ -93,6 +93,7 @@ public class AccountService implements IAccountService {
         return accountDetailDtoConverter.convertToDto(account);
     }
 
+    @Transactional
     public AccountDetailDto updateAccount(Long accountId, AccountDetailDto accountDetailDto) throws ResourceNotFoundException {
         //TODO : throw better exception here
         if (Utils.isEmptyObject(accountDetailDto)) {
