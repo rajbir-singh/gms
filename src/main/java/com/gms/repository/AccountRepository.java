@@ -1,8 +1,10 @@
 package com.gms.repository;
 
 import com.gms.domain.Account;
+//import com.gms.mysql.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +17,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
 //    Page<Account> findAll(Pageable pageable);
 
-    Page<Account> findByName(String name, Pageable pageable);
+    Page<Account> findAll(Specification<Account> specification, Pageable pageable);
+    Page<Account> findByNameOrEmail1OrMobile1(Specification<Account> specification, Pageable pageable);
+
+    Page<Account> findByName(Pageable pageable);
 
 //    @Query(name="AccountNameQuery", nativeQuery = true)
 //    List<AccountNameDto> findName();

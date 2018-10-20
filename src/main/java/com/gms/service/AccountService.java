@@ -9,10 +9,12 @@ import com.gms.dto.AccountDetailDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.dto.AddressDetailDto;
 import com.gms.exception.ResourceNotFoundException;
+//import com.gms.mysql.Specification;
 import com.gms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -191,5 +193,9 @@ public class AccountService implements IAccountService {
 //        public void deleteArticle(int articleId) {
 //            articleRepository.delete(getArticleById(articleId));
 //        }
+    }
+
+    public Page<Account> findByNameOrEmailOrMobile(Specification<Account> specification, Pageable pageable) {
+        return accountRepository.findAll(specification, pageable);
     }
 }

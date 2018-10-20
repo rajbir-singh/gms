@@ -1,15 +1,20 @@
 package com.gms.controller;
 
+import com.gms.domain.Account;
 import com.gms.dto.AccountDetailDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.exception.ResourceNotFoundException;
 import com.gms.service.AccountService;
 import com.gms.service.AddressService;
 import com.gms.service.Utils;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Or;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -67,9 +72,15 @@ public class AccountController extends BaseController {
     //TODO : make this paginated
     @GetMapping(path = "/all")
     @ResponseBody
-    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(Pageable pageable) {
+    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(@Or({
+            @Spec(path = "name", params = "query", spec = Like.class),
+            @Spec(path = "mobile1", params = "query", spec = Like.class),
+            @Spec(path = "mobile2", params = "query", spec = Like.class),
+            @Spec(path = "email1", params = "query", spec = Like.class),
+            @Spec(path = "email2", params = "query", spec = Like.class)
+    }) Specification<Account> accountSpec, Pageable pageable) {
         // This returns a JSON or XML with the users
-        return ok(accountService.findAll(pageable));
+        return ok(accountService.findByNameOrEmailOrMobile(accountSpec, pageable));
     }
 
 }
