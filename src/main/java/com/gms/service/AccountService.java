@@ -138,17 +138,14 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account findByAccountId(Long accountId) throws ResourceNotFoundException {
+    public Account findByAccountId(Long accountId){
         if (existsById(accountId)) {
             return accountRepository.findByAccountId(accountId);
         } else
             throw new ResourceNotFoundException("Account with accountId : " + accountId + " not found");
     }
 
-    public AccountDetailDto getAccountDetailDtoByAccountId(Long accountId) throws ResourceNotFoundException {
-        if (!accountRepository.existsById(accountId)) {
-            throw new ResourceNotFoundException("Account with accountId : " + accountId + " not found");
-        }
+    public AccountDetailDto getAccountDetailDtoByAccountId(Long accountId){
         Account account = findByAccountId(accountId);
         return accountDetailDtoConverter.convertToDto(account);
     }

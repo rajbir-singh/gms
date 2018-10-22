@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -42,8 +43,14 @@ public class Account {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class, mappedBy = "account")
     private List<Address> addresses;
 
+//    @Column(name = "ownHouse", nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean ownHouse;
+
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean onlyChild;
+
+
     private String details;
 
     public static interface AccountIdStep {

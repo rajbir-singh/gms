@@ -11,6 +11,6 @@ import java.util.List;
 public interface IAccountService {
 //    @Transactional
     List<AccountListItemDto> findAll();
-    Account findByAccountId(Long accountId) throws ResourceNotFoundException;
+    Account findByAccountId(Long accountId);
     Account saveAccount(Account account);
 }

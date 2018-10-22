@@ -62,7 +62,7 @@ public class AccountController extends BaseController {
     @GetMapping(value = "{accountId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<RestResponse<AccountDetailDto>> getAccountId(@PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
         if (Utils.isEmptyObject(accountId)) {
-            throw new RuntimeException("Empty accountId found!");
+            throw new IllegalArgumentException("Empty accountId found!");
         }
         return ok(accountService.getAccountDetailDtoByAccountId(accountId));
     }
