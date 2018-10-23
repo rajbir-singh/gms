@@ -21,12 +21,12 @@ public class AddressDetailDtoConverter implements DtoConverter<Address, AddressD
 
     @Override
     public AddressDetailDto convertToDto(Address address) {
-        if(Utils.isEmptyObject(address)) {
+        if (Utils.isEmptyObject(address)) {
             return null;
         }
         Long accountId = null;
         Account account = address.getAccount();
-        if(!Utils.isEmptyObject(account)) {
+        if (!Utils.isEmptyObject(account)) {
             accountId = account.getAccountId();
         }
         return AddressDetailDto.Builder.addressDetailDto()
@@ -45,9 +45,9 @@ public class AddressDetailDtoConverter implements DtoConverter<Address, AddressD
     }
 
     @Override
-    public Address convertFromDto(AddressDetailDto addressDetailDto) throws ResourceNotFoundException {
+    public Address convertFromDto(AddressDetailDto addressDetailDto) {
         if (Utils.isEmptyObject(addressDetailDto)) {
-            throw new RuntimeException("Either AddressDetailDto or AccountId to which address belongs found null!");
+            return null;
         } else {
             Account account = null;
             if (!Utils.isLongNullOrEmpty(addressDetailDto.getAccountId())) {
@@ -69,8 +69,7 @@ public class AddressDetailDtoConverter implements DtoConverter<Address, AddressD
         }
     }
 
-
-    public List<Address> convertFromDtos(List<AddressDetailDto> addressDetailDtos) throws ResourceNotFoundException {
+    public List<Address> convertFromDtos(List<AddressDetailDto> addressDetailDtos) {
         if (Utils.isEmptyList(addressDetailDtos)) {
             return Collections.emptyList();
         }
@@ -81,7 +80,7 @@ public class AddressDetailDtoConverter implements DtoConverter<Address, AddressD
         return addresses;
     }
 
-    public List<AddressDetailDto> convertToDtos(List<Address> addresses) throws ResourceNotFoundException {
+    public List<AddressDetailDto> convertToDtos(List<Address> addresses) {
         if (Utils.isEmptyList(addresses)) {
             return Collections.emptyList();
         }

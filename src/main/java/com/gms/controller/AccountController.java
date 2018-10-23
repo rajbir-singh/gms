@@ -29,6 +29,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Controller
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/api/account")
 public class AccountController extends BaseController {
 
@@ -41,7 +42,7 @@ public class AccountController extends BaseController {
     private AddressService addressService;
 
     //TODO : write tests that check attribute level validations
-    @PutMapping(path = "add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountDetailDto accountDetailDto, BindingResult bindingResult) throws ResourceNotFoundException {
         if (bindingResult.hasErrors()) {
             logger.info("AccountDetailDto is not valid");
@@ -50,7 +51,7 @@ public class AccountController extends BaseController {
         return ok(newRestResponse(accountService.addAccount(accountDetailDto)));
     }
 
-    @PostMapping(path = "/update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/update/{accountId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<RestResponse<AccountDetailDto>> updateAccount(@Valid @NotNull @RequestBody AccountDetailDto accountDetailDto, BindingResult bindingResult, @PathVariable(name = "accountId") @NotNull @NotEmpty Long accountId) throws ResourceNotFoundException {
         if (bindingResult.hasErrors()) {
             logger.info("AccountDetailDto is not valid");

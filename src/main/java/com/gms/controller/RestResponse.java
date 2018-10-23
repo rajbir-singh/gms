@@ -1,9 +1,5 @@
 package com.gms.controller;
 
-/**
- * Created by Sony on 10-09-2017.
- */
-
 public class RestResponse<T> {
     private T data;
     private boolean success;

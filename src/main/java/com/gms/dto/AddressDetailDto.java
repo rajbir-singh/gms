@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Convert;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -15,17 +17,29 @@ import javax.persistence.Convert;
 public class AddressDetailDto {
 
     private Long addressId;
+
+    @NotNull
+    @Size(min = 5)
     private String addressLine1;
+
     private String addressLine2;
+
     private String addressLine3;
+
     private String addressLine4;
+
     //TODO : crete city enums
     private String city;
     @Convert(converter = StateEAConverter.class)
+
     private State state;
+
     private String pincode;
+
     private String country;
+
     private AddressType addressType;
+
     //will be null if address is created along with a new account, else this must be the accountId of the account to which this address belongs
     private Long accountId;
 

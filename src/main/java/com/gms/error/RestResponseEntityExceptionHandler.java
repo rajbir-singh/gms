@@ -1,9 +1,8 @@
 package com.gms.error;
 
 
-import javax.persistence.EntityNotFoundException;
-
 import com.gms.exception.ResourceNotFoundException;
+import com.gms.utils.ValidationUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,12 +11,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
@@ -29,6 +30,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     private String preProcessExceptionAndGetErrorMessage(Exception e) {
+        //TODO : print stackTrace only in debug profile
         e.printStackTrace();
         return e.getMessage();
     }
@@ -48,6 +50,22 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .withMessage(errorMessage)
                 .withDebugMessage(ex.getLocalizedMessage())
                 .withSubErrors(Collections.emptyList())
+                .build();
+
+        return buildResponseEntity(apiError);
+    }
+
+    //IllegalArgs
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    protected ResponseEntity<Object> handleNotFound(final MethodArgumentNotValidException ex, final WebRequest request) {
+        final String errorMessage = preProcessExceptionAndGetErrorMessage(ex);
+        BindingResult bindingResult = ex.getBindingResult();
+        ApiError apiError = ApiError.Builder.apiError()
+                .withStatus(HttpStatus.BAD_REQUEST)
+                .withTimestamp(LocalDateTime.now())
+                .withMessage(errorMessage)
+                .withDebugMessage(ex.getLocalizedMessage())
+                .withSubErrors(ValidationUtils.fromBindingErrors(bindingResult))
                 .build();
 
         return buildResponseEntity(apiError);

@@ -1,10 +1,12 @@
 package com.gms.service;
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@NoArgsConstructor
 public class Utils {
 
     public static boolean isEmptyObject(Object o) {

@@ -20,9 +20,9 @@ public class AccountListItemConverter implements DtoConverter<Account, AccountLi
             List<Address> addressList = account.getAddresses();
             State state = null;
             String city = null;
-            if(!Utils.isEmptyList(addressList)) {
+            if (!Utils.isEmptyList(addressList)) {
                 Optional<Address> firstAddress = addressList.stream().findFirst();
-                if(firstAddress.isPresent()) {
+                if (firstAddress.isPresent()) {
                     state = firstAddress.get().getState();
                     city = firstAddress.get().getCity();
                 }
@@ -36,7 +36,7 @@ public class AccountListItemConverter implements DtoConverter<Account, AccountLi
                     .withMothersName(account.getMothersName())
                     .withMobile1(account.getMobile1())
                     .withEmail1(account.getEmail1())
-                    .withHeight(account.getWeight())
+                    .withHeight(account.getHeight())
                     .withWeight(account.getWeight())
                     .withQualification(account.getQualification())
                     .withIncome(account.getIncome())
@@ -46,8 +46,10 @@ public class AccountListItemConverter implements DtoConverter<Account, AccountLi
         }
     }
 
+
     @Override
     public Account convertFromDto(AccountListItemDto accountListItemDto) {
+        //not required yet
         return null;
     }
 }

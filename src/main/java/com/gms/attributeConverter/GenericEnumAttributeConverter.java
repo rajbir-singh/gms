@@ -8,7 +8,6 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.Map;
 
-//@Converter(autoApply = true)
 public abstract class GenericEnumAttributeConverter<J, D> implements AttributeConverter<J, D> {
 
     protected BiMap<J, D> map;

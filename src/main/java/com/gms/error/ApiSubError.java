@@ -1,5 +1,8 @@
 package com.gms.error;
 
-abstract class ApiSubError {
+import lombok.NoArgsConstructor;
+
+//@NoArgsConstructor
+public abstract class ApiSubError {
 
 }

@@ -3,6 +3,7 @@ package com.gms.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 import java.sql.Date;
@@ -16,38 +17,43 @@ public class AccountDetailDto {
     //this field is null in payload if account is to be created, else if it is to be updated then its the Id of the account to be updated
     private Long accountId;
 
-    @NotNull @Size( min = 4, message = "Name must be at least 4 chats long") @NotEmpty
+    @NotNull @Size( min = 4, message = "Name must be at least 4 characters long")
     private String name;
 
-//    @NotNull @Past
+    @NotNull @Past @DateTimeFormat(pattern="MM/dd/yyyy")
     private Date dob;
 
-//    @NotNull @Size( min = 4) @NotEmpty
+    @NotNull @Size( min = 4) @NotEmpty
     private String fathersName;
 
-//    @NotNull @Size( min = 4) @NotEmpty
+    @NotNull @Size( min = 4) @NotEmpty
     private String mothersName;
 
-//    @Mobile @Notnull @NotEmpty
+    @NotNull
+//    @Mobile
     private String mobile1;
 
 //    @Mobile
     private String mobile2;
 
-//    @Email @Notnull @NotEmpty
+//    @EmailCustomValidator
+    @NotNull
     private String email1;
 
-//    @Email
+//    @EmailCustomValidator
     private String email2;
 
+    //height in inches
     private Double height;
 
+    //weight in Kgs
     private Double weight;
 
     private String qualification;
 
     private String occupation;
 
+    //monthly income
     private Long income;
 
 //    @NotNull

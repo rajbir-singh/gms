@@ -9,13 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.util.List;
 
-/**
- * Created by Sony on 10-09-2017.
- */
 @Configuration
-//@ComponentScan(basePackageClasses = AppConfig.class, useDefaultFilters = false, includeFilters = {
-//        @ComponentScan.Filter(org.springframework.stereotype.Controller.class) })
-//@EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -25,25 +19,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
                 .allowCredentials(true).maxAge(3600);
     }
+
     @Override
     public void configureMessageConverters(
             List<HttpMessageConverter<?>> converters) {
-
-//        converters.add(createXmlHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter());
 
         super.configureMessageConverters(converters);
     }
-//    private HttpMessageConverter<Object> createXmlHttpMessageConverter() {
-//        MarshallingHttpMessageConverter xmlConverter =
-//                new MarshallingHttpMessageConverter();
-//
-//        XStreamMarshaller xstreamMarshaller = new XStreamMarshaller();
-//        xmlConverter.setMarshaller(xstreamMarshaller);
-//        xmlConverter.setUnmarshaller(xstreamMarshaller);
-//
-//        return xmlConverter;
-//    }
 
 }
 

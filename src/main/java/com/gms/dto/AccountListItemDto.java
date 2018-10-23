@@ -4,26 +4,59 @@ import com.gms.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//Compact Info used for account list page
 public class AccountListItemDto {
 
     private Long accountId;
+
+    @NotNull
+    @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
+
+    @NotNull
+    @Past
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
     private Date dob;
+
+    @NotNull
+    @Size(min = 4)
     private String fathersName;
+
+    @NotNull
+    @Size(min = 4)
     private String mothersName;
+
+    @NotNull
+//    @Mobile
     private String mobile1;
+
+    @NotNull
+//    @Email
     private String email1;
+
+    //height in inches
     private Double height;
+
+    //weight in Kgs
     private Double weight;
+
     private String qualification;
+
+    //monthly income
     private Long income;
+
     private State state;
+
     private String city;
 
     public static interface AccountIdStep {

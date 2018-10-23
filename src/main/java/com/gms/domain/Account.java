@@ -6,8 +6,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.List;
 
@@ -20,36 +24,66 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-//    @Column(name = "accountid")
+    //@Column(name = "accountid")
+    //not using @Column(name = ), hibernate naming strategy settings in application.properties make sure that columns' name are same as the variable name
     private Long accountId;
+
+    @NotNull
+    @Size(min=3, max=50)
     private String name;
 
+    @DateTimeFormat(pattern="MM/dd/yyyy")
+    @NotNull
+    @Past
     private Date dob;
 
+    @NotNull
+    @Size(min=3, max=50)
     private String fathersName;
+
+    @NotNull
+    @Size(min=3, max=50)
     private String mothersName;
+
+    @NotNull
+//    @Mobile
     private String mobile1;
+
+//    @Mobile
     private String mobile2;
+
+    @NotNull
+//    @EmailCustomeValidator
     private String email1;
+
+    //    @EmailCustomValidator
     private String email2;
+
+    //height in inches
     private Double height;
+
+    //weight in Kgs
     private Double weight;
+
+    //TODO : make enums for qualification, will help in filtering
     private String qualification;
+
+    //TODO : make enums for qualification, will help in filtering
     private String occupation;
+
+    //monthly income
     private Long income;
 
+    //@EqualsAndHashCode.Exclude
     @JsonManagedReference
-//    @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Address.class, mappedBy = "account")
     private List<Address> addresses;
 
-//    @Column(name = "ownHouse", nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean ownHouse;
 
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean onlyChild;
-
 
     private String details;
 

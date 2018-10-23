@@ -10,10 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-/**
- * Created by Sony on 10-09-2017.
- */
-
 @RestController
 public abstract class BaseController {
 

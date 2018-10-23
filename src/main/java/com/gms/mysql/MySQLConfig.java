@@ -12,6 +12,7 @@ public class MySQLConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        //kaczmarzyk mysql arguments resolver : https://blog.tratif.com/2017/11/23/effective-restful-search-api-in-spring/
         argumentResolvers.add(new SpecificationArgumentResolver());
     }
 

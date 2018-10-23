@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "address")
@@ -23,25 +25,40 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long  addressId;
+
+    @NotNull
+    @Size(min = 3, max = 50)
     private String addressLine1;
+
+    @Size(min = 3, max = 50)
     private String addressLine2;
+
+    @Size(min = 3, max = 50)
     private String addressLine3;
+
+    @Size(min = 3, max = 50)
     private String addressLine4;
+
     //TODO : crete city enums
     private String city;
+
 //    @Enumerated(EnumType.STRING)
     @Convert(converter = StateEAConverter.class)
     private State state;
-    private String pincode;
-    private String country;
-//    @Enumerated(EnumType.STRING)
 
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String pincode;
+
+    private String country;
+
+    @NotNull
     @Convert(converter = AddressTypeEAConverter.class)
     private AddressType addressType;
 
-    @JsonBackReference
     //fetchType is EAGER by default, may cause n+1 problem more details here https://www.thoughts-on-java.org/best-practices-many-one-one-many-associations-mappings/ http://www.thoughts-on-java.org/free-n1_select_course/
-//    @JsonIgnore
+    //@JsonIgnore
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_accountId")
     private Account account;
