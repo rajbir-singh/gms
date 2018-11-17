@@ -53,7 +53,7 @@ public class Account {
     private String mobile2;
 
     @NotNull
-//    @EmailCustomeValidator
+//    @EmailCustomValidator
     private String email1;
 
     //    @EmailCustomValidator

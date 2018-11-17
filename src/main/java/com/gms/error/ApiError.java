@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiError {
 
     private HttpStatus status;
@@ -30,7 +33,7 @@ public class ApiError {
 
     private String debugMessage;
 
-    private List<ApiSubError> subErrors;
+    private List<? extends ApiSubError> subErrors;
 
     public static interface StatusStep {
         TimestampStep withStatus(HttpStatus status);
@@ -49,19 +52,20 @@ public class ApiError {
     }
 
     public static interface SubErrorsStep {
-        BuildStep withSubErrors(List<ApiSubError> subErrors);
+        BuildStep withSubErrors(List<? extends ApiSubError> subErrors);
     }
 
     public static interface BuildStep {
         ApiError build();
     }
 
+
     public static class Builder implements StatusStep, TimestampStep, MessageStep, DebugMessageStep, SubErrorsStep, BuildStep {
         private HttpStatus status;
         private LocalDateTime timestamp;
         private String message;
         private String debugMessage;
-        private List<ApiSubError> subErrors;
+        private List<? extends ApiSubError> subErrors;
 
         private Builder() {
         }
@@ -95,38 +99,20 @@ public class ApiError {
         }
 
         @Override
-        public BuildStep withSubErrors(List<ApiSubError> subErrors) {
+        public BuildStep withSubErrors(List<? extends ApiSubError> subErrors) {
             this.subErrors = subErrors;
             return this;
         }
 
         @Override
         public ApiError build() {
-            ApiError apiError = new ApiError();
-            apiError.setStatus(this.status);
-            apiError.setTimestamp(this.timestamp);
-            apiError.setMessage(this.message);
-            apiError.setDebugMessage(this.debugMessage);
-            apiError.setSubErrors(this.subErrors);
-            return apiError;
+            return new ApiError(
+                    this.status,
+                    this.timestamp,
+                    this.message,
+                    this.debugMessage,
+                    this.subErrors
+            );
         }
     }
-
-//    private ApiError() {
-//        timestamp = LocalDateTime.now();
-//    }
-//
-//    ApiError(HttpStatus status) {
-//        this();
-//        this.status = status;
-//    }
-//
-//    ApiError(HttpStatus status, Throwable ex) {
-//        this();
-//        this.status = status;
-//        this.message = "Unexpected error";
-//        this.debugMessage = ex.getLocalizedMessage();
-//    }
-
-
 }

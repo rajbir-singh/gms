@@ -5,6 +5,7 @@ import com.gms.converter.AccountListItemConverter;
 import com.gms.converter.AddressDetailDtoConverter;
 import com.gms.domain.Account;
 import com.gms.domain.Address;
+import com.gms.service.Utils;
 import com.gms.dto.AccountDetailDto;
 import com.gms.dto.AccountListItemDto;
 import com.gms.dto.AddressDetailDto;
@@ -192,7 +193,8 @@ public class AccountService implements IAccountService {
 //        }
     }
 
-    public Page<Account> findByNameOrEmailOrMobile(Specification<Account> specification, Pageable pageable) {
+    @Override
+    public Page<Account> findAll(Specification<Account> specification, Pageable pageable) {
         return accountRepository.findAll(specification, pageable);
     }
 }

@@ -1,15 +1,24 @@
 package com.gms.controller;
 
+import com.gms.attributeConverter.StateEAConverter;
 import com.gms.domain.Account;
 import com.gms.dto.AccountDetailDto;
 import com.gms.dto.AccountListItemDto;
+import com.gms.exception.BindingErrorException;
 import com.gms.exception.ResourceNotFoundException;
 import com.gms.service.AccountService;
 import com.gms.service.AddressService;
 import com.gms.service.Utils;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.In;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Or;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.JoinType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +32,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -43,10 +51,10 @@ public class AccountController extends BaseController {
 
     //TODO : write tests that check attribute level validations
     @PostMapping(path = "add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountDetailDto accountDetailDto, BindingResult bindingResult) throws ResourceNotFoundException {
+    public ResponseEntity addAccount(@Valid @NotNull @RequestBody AccountDetailDto accountDetailDto, BindingResult bindingResult) throws ResourceNotFoundException, BindingErrorException {
         if (bindingResult.hasErrors()) {
             logger.info("AccountDetailDto is not valid");
-            return null;
+            throw new BindingErrorException(bindingResult);
         }
         return ok(newRestResponse(accountService.addAccount(accountDetailDto)));
     }
@@ -73,15 +81,20 @@ public class AccountController extends BaseController {
     //TODO : make this paginated
     @GetMapping(path = "/all")
     @ResponseBody
-    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(@Or({
-            @Spec(path = "name", params = "query", spec = Like.class),
-            @Spec(path = "mobile1", params = "query", spec = Like.class),
-            @Spec(path = "mobile2", params = "query", spec = Like.class),
-            @Spec(path = "email1", params = "query", spec = Like.class),
-            @Spec(path = "email2", params = "query", spec = Like.class)
-    }) Specification<Account> accountSpec, Pageable pageable) {
+    public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(
+            @Join(path = "addresses", alias = "a", type = JoinType.LEFT)
+            @Or({
+                    @Spec(path = "accountId", params = "query", spec = Equal.class),
+                    @Spec(path = "name", params = "query", spec = Like.class),
+                    @Spec(path = "mobile1", params = "query", spec = Like.class),
+                    @Spec(path = "mobile2", params = "query", spec = Like.class),
+                    @Spec(path = "email1", params = "query", spec = Like.class),
+                    @Spec(path = "email2", params = "query", spec = Like.class),
+                    @Spec(path = "qualification", params = "query", spec = Like.class)
+//            @Spec(path = "a.state", params = "query", spec = In.class)
+            }) Specification<Account> accountSpec, Pageable pageable) {
         // This returns a JSON or XML with the users
-        return ok(accountService.findByNameOrEmailOrMobile(accountSpec, pageable));
+        return ok(accountService.findAll(accountSpec, pageable));
     }
 
 }

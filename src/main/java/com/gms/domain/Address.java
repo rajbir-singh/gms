@@ -42,8 +42,8 @@ public class Address {
     //TODO : crete city enums
     private String city;
 
-//    @Enumerated(EnumType.STRING)
-    @Convert(converter = StateEAConverter.class)
+    @Enumerated(EnumType.STRING)
+//    @Convert(converter = StateEAConverter.class)
     private State state;
 
     @NotNull

@@ -6,7 +6,10 @@ import com.gms.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.gms.service.Utils;
 
 @Service
 public class AddressService implements IAddressService {
@@ -16,7 +19,12 @@ public class AddressService implements IAddressService {
 
     @Override
     public List<Address> findAll() {
-        return addressRepository.findAll();
+        List<Address> addressList = new ArrayList<>();
+        Iterable<Address> addresses = addressRepository.findAll();
+        if (addresses.iterator().hasNext()) {
+            addresses.forEach(address -> addressList.add(address));
+        }
+        return addressList;
     }
 
     @Override

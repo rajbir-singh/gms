@@ -6,18 +6,29 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
-
+public interface AccountRepository extends PagingAndSortingRepository<Account, Long>, AccountRepositoryCustom {
 
     //    List<Account> findAll();
     Account findByAccountId(Long accountId);
 
-//    Page<Account> findAll(Pageable pageable);
+    Account findByEmail1(Account emailAddress);
+
+    List<Account> findAll();
 
     Page<Account> findAll(Specification<Account> specification, Pageable pageable);
+
+    @Transactional(timeout = 10)
+    <S extends Account> S save(S entity);
+
+//    Page<Account> findAll(Pageable pageable);
+
     Page<Account> findByNameOrEmail1OrMobile1(Specification<Account> specification, Pageable pageable);
 
     Page<Account> findByName(Pageable pageable);

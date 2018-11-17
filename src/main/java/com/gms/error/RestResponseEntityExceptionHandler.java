@@ -1,6 +1,7 @@
 package com.gms.error;
 
 
+import com.gms.exception.BindingErrorException;
 import com.gms.exception.ResourceNotFoundException;
 import com.gms.utils.ValidationUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
@@ -41,8 +41,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     // 404
 
-    @ExceptionHandler(value = {EntityNotFoundException.class, ResourceNotFoundException.class})
-    protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request) {
+    @ExceptionHandler(value = {ResourceNotFoundException.class, ResourceNotFoundException.class})
+    protected ResponseEntity<Object> handleNotFound(final ResourceNotFoundException ex, final WebRequest request) {
         final String errorMessage = preProcessExceptionAndGetErrorMessage(ex);
         ApiError apiError = ApiError.Builder.apiError()
                 .withStatus(HttpStatus.NOT_FOUND)
@@ -56,8 +56,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     //IllegalArgs
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    protected ResponseEntity<Object> handleNotFound(final MethodArgumentNotValidException ex, final WebRequest request) {
+    @ExceptionHandler(value = {BindingErrorException.class})
+    protected ResponseEntity<Object> handleBindingException(final BindingErrorException ex, final WebRequest request) {
         final String errorMessage = preProcessExceptionAndGetErrorMessage(ex);
         BindingResult bindingResult = ex.getBindingResult();
         ApiError apiError = ApiError.Builder.apiError()
