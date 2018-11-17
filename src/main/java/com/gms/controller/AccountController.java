@@ -1,6 +1,5 @@
 package com.gms.controller;
 
-import com.gms.attributeConverter.StateEAConverter;
 import com.gms.domain.Account;
 import com.gms.dto.AccountDetailDto;
 import com.gms.dto.AccountListItemDto;
@@ -10,15 +9,9 @@ import com.gms.service.AccountService;
 import com.gms.service.AddressService;
 import com.gms.service.Utils;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.In;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Or;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,17 +88,7 @@ public class AccountController extends BaseController {
 //            @Spec(path = "a.state", params = "query", spec = In.class)
             }) Specification<Account> accountSpec, Pageable pageable) {
 
-        System.out.println("Starting Debugging");
-
-        System.out.println("finding without specs");
-        List<AccountListItemDto> accounts = accountService.findAll();
-        System.out.println("accounts found : " + accounts.size());
-        System.out.println("AccountId found : " + accounts.get(0).getAccountId());
-
-        System.out.println("Now trying with specs");
         Page<Account> accountPage = accountService.findAll(accountSpec, pageable);
-        System.out.println("accounts found : " + accountPage.getContent().size());
-        System.out.println("AccountId found : " + accountPage.getContent().get(0).getAccountId());
         return ok(accountService.findAll(accountSpec, pageable));
     }
 

@@ -30,8 +30,8 @@ public class AddressDetailDto {
 
     //TODO : crete city enums
     private String city;
-    @Convert(converter = StateEAConverter.class)
 
+//    @Convert(converter = StateEAConverter.class)
     private State state;
 
     private String pincode;

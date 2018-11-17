@@ -20,6 +20,7 @@ public abstract class GenericEnumAttributeConverter<J, D> implements AttributeCo
 
     @Override
     public D convertToDatabaseColumn(J javaObject) {
+
         return map.get(javaObject);
     }
 

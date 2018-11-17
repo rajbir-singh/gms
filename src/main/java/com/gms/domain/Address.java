@@ -24,7 +24,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    private Long  addressId;
+    private Long addressId;
 
     @NotNull
     @Size(min = 3, max = 50)
@@ -42,8 +42,8 @@ public class Address {
     //TODO : crete city enums
     private String city;
 
-    @Enumerated(EnumType.STRING)
-//    @Convert(converter = StateEAConverter.class)
+    //    @Enumerated(EnumType.STRING)
+    @Convert(converter = StateEAConverter.class)
     private State state;
 
     @NotNull
