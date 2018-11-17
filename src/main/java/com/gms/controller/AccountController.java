@@ -94,11 +94,18 @@ public class AccountController extends BaseController {
                     @Spec(path = "qualification", params = "query", spec = Like.class)
 //            @Spec(path = "a.state", params = "query", spec = In.class)
             }) Specification<Account> accountSpec, Pageable pageable) {
-        // This returns a JSON or XML with the users
-        logger.debug("Starting Debugging");
+
+        System.err.print("Starting Debugging");
+
+        System.err.print("finding without specs");
+        List<AccountListItemDto> accounts = accountService.findAll();
+        System.err.print("accounts found : " + accounts.size());
+        System.err.print("AccountId found : " + accounts.get(0).getAccountId());
+
+        System.err.print("Now trying with specs");
         Page<Account> accountPage = accountService.findAll(accountSpec, pageable);
-        logger.debug("accounts found : {}", accountPage.getContent().size());
-        logger.debug("AccountId found : {}", accountPage.getContent().get(0).getAccountId());
+        System.err.print("accounts found : " + accountPage.getContent().size());
+        System.err.print("AccountId found : " + accountPage.getContent().get(0).getAccountId());
         return ok(accountService.findAll(accountSpec, pageable));
     }
 
