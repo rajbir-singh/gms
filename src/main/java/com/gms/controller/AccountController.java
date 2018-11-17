@@ -82,7 +82,7 @@ public class AccountController extends BaseController {
     @GetMapping(path = "/all")
     @ResponseBody
     public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(
-            @Join(path = "addresses", alias = "a", type = JoinType.LEFT)
+//            @Join(path = "addresses", alias = "a", type = JoinType.LEFT)
             @Or({
                     @Spec(path = "accountId", params = "query", spec = Equal.class),
                     @Spec(path = "name", params = "query", spec = Like.class),
