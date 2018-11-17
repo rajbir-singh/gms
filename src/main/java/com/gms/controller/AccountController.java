@@ -95,17 +95,17 @@ public class AccountController extends BaseController {
 //            @Spec(path = "a.state", params = "query", spec = In.class)
             }) Specification<Account> accountSpec, Pageable pageable) {
 
-        System.err.print("Starting Debugging");
+        System.out.println("Starting Debugging");
 
-        System.err.print("finding without specs");
+        System.out.println("finding without specs");
         List<AccountListItemDto> accounts = accountService.findAll();
-        System.err.print("accounts found : " + accounts.size());
-        System.err.print("AccountId found : " + accounts.get(0).getAccountId());
+        System.out.println("accounts found : " + accounts.size());
+        System.out.println("AccountId found : " + accounts.get(0).getAccountId());
 
-        System.err.print("Now trying with specs");
+        System.out.println("Now trying with specs");
         Page<Account> accountPage = accountService.findAll(accountSpec, pageable);
-        System.err.print("accounts found : " + accountPage.getContent().size());
-        System.err.print("AccountId found : " + accountPage.getContent().get(0).getAccountId());
+        System.out.println("accounts found : " + accountPage.getContent().size());
+        System.out.println("AccountId found : " + accountPage.getContent().get(0).getAccountId());
         return ok(accountService.findAll(accountSpec, pageable));
     }
 
