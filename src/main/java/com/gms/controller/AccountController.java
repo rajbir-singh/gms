@@ -22,6 +22,7 @@ import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +95,10 @@ public class AccountController extends BaseController {
 //            @Spec(path = "a.state", params = "query", spec = In.class)
             }) Specification<Account> accountSpec, Pageable pageable) {
         // This returns a JSON or XML with the users
+        logger.debug("Starting Debugging");
+        Page<Account> accountPage = accountService.findAll(accountSpec, pageable);
+        logger.debug("accounts found : {}", accountPage.getContent().size());
+        logger.debug("AccountId found : {}", accountPage.getContent().get(0).getAccountId());
         return ok(accountService.findAll(accountSpec, pageable));
     }
 

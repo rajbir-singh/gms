@@ -103,13 +103,13 @@
 	</build>
 
 	<repositories>
-		<repository>
-			<id>kaczmarzyk.net</id>
-			<url>http://repo.kaczmarzyk.net</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
+		<!--<repository>-->
+			<!--<id>kaczmarzyk.net</id>-->
+			<!--<url>http://repo.kaczmarzyk.net</url>-->
+			<!--<snapshots>-->
+				<!--<enabled>true</enabled>-->
+			<!--</snapshots>-->
+		<!--</repository>-->
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>
