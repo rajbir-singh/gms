@@ -59,7 +59,7 @@ public class AccountController extends BaseController {
             logger.info("AccountDetailDto is not valid");
             return null;
         }
-        return ok(accountService.updateAccount(accountId, accountDetailDto));
+        return ok(newRestResponse(accountService.updateAccount(accountId, accountDetailDto), true, "updated Account with accountId: " + accountId));
     }
 
     @GetMapping(value = "{accountId}", produces = APPLICATION_JSON_VALUE)
@@ -67,13 +67,12 @@ public class AccountController extends BaseController {
         if (Utils.isEmptyObject(accountId)) {
             throw new IllegalArgumentException("Empty accountId found!");
         }
-        return ok(accountService.getAccountDetailDtoByAccountId(accountId));
+            return ok(newRestResponse(accountService.getAccountDetailDtoByAccountId(accountId), true, "found account with accountId: " + accountId));
     }
 
     /********************* PASSED PHASE ONE ***************************/
 
-    //TODO : make this paginated
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/all", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<RestResponse<List<AccountListItemDto>>> getAllAccounts(
 //            @Join(path = "addresses", alias = "a", type = JoinType.LEFT)
@@ -89,7 +88,7 @@ public class AccountController extends BaseController {
             }) Specification<Account> accountSpec, Pageable pageable) {
 
         Page<Account> accountPage = accountService.findAll(accountSpec, pageable);
-        return ok(accountService.findAll(accountSpec, pageable));
+        return ok(newRestResponse(accountService.findAll(accountSpec, pageable), true, "accounts search results"));
     }
 
 }

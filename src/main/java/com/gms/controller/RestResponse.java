@@ -3,12 +3,12 @@ package com.gms.controller;
 public class RestResponse<T> {
     private T data;
     private boolean success;
-    private String errorMessage;
+    private String message;
 
-    public RestResponse(T data, boolean success, String errorMessage) {
+    public RestResponse(T data, boolean success, String message) {
         this.data = data;
         this.success = success;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
 
     public T getData() {
@@ -27,11 +27,11 @@ public class RestResponse<T> {
         this.success = success;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

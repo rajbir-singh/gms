@@ -324,9 +324,9 @@ public abstract class BaseController {
         return new RestResponse<>(null, false, getErrors(fieldErrors));
     }
 
-    protected static <T> RestResponse<T> newRestResponse(T data, boolean status, String errorMessage) {
+    protected static <T> RestResponse<T> newRestResponse(T data, boolean status, String message) {
 
-        return new RestResponse<>(data, status, errorMessage);
+        return new RestResponse<>(data, status, message);
     }
 
     protected static String getErrors(List<FieldError> fieldErrors) {
