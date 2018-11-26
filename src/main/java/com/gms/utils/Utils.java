@@ -18,9 +18,11 @@ public class Utils {
     }
 
     public static boolean isEmptyList(Object o) {
-        if(isEmptyObject(o)) { return true; }
-        else if (o instanceof List) { return ((List) o).size() == 0; }
-        else return false;
+        if (isEmptyObject(o)) {
+            return true;
+        } else if (o instanceof List) {
+            return ((List) o).size() == 0;
+        } else return false;
     }
 
     public static boolean isNonEmptyList(Object o) {
@@ -29,6 +31,10 @@ public class Utils {
 
     public static boolean isStrNullOrEmpty(String str) {
         return str == null || str.isEmpty();
+    }
+
+    public static boolean isStrNonEmpty(String str) {
+        return !isStrNullOrEmpty(str);
     }
 
     public static boolean isLongNullOrEmpty(Long lng) {

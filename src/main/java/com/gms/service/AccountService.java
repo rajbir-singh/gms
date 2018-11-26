@@ -19,6 +19,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +30,9 @@ public class AccountService implements IAccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private GoogleLoginService googleLoginService;
 
     @Autowired
     private AccountListItemConverter accountListItemConverter;
@@ -73,6 +78,45 @@ public class AccountService implements IAccountService {
             throw new RuntimeException("Null Account object found!");
         }
         return accountRepository.save(account);
+    }
+
+    @Override
+    public Account findByEmail1OrEmail2(String email) {
+        return accountRepository.findByEmail1OrEmail2(email, email);
+    }
+
+    @Override
+    public AccountDetailDto findOrCreateAccountForGoogleUser(String idTokenString) throws GeneralSecurityException, IOException {
+        String email = googleLoginService.verifyGoogleIdToken(idTokenString);
+
+        if (Utils.isStrNullOrEmpty(email)) {
+            throw new RuntimeException("Error creating account for google user, Empty email found!");
+        }
+        Account account = accountRepository.findByEmail1OrEmail2(email, email);
+        if (Utils.isNotEmptyObject(account)) {
+            return getAccountDetailDtoByAccountId(account.getAccountId());
+        }
+        AccountDetailDto accountDetailDto = AccountDetailDto.Builder.accountCreateDto()
+                .withAccountId(null)
+                .withName(null)
+                .withDob(null)
+                .withFathersName(null)
+                .withMothersName(null)
+                .withMobile1(null)
+                .withMobile2(null)
+                .withEmail1(email)
+                .withEmail2(null)
+                .withHeight(null)
+                .withWeight(null)
+                .withQualification(null)
+                .withOccupation(null)
+                .withIncome(null)
+                .withAddresses(null)
+                .withOwnHouse(null)
+                .withOnlyChild(null)
+                .withDetails(null)
+                .build();
+        return addAccount(accountDetailDto);
     }
 
     public AccountDetailDto addAccount(AccountDetailDto accountDetailDto) throws ResourceNotFoundException {
@@ -138,15 +182,16 @@ public class AccountService implements IAccountService {
         return accountDetailDtoConverter.convertToDto(account);
     }
 
+
     @Override
-    public Account findByAccountId(Long accountId){
+    public Account findByAccountId(Long accountId) {
         if (existsById(accountId)) {
             return accountRepository.findByAccountId(accountId);
         } else
             throw new ResourceNotFoundException("Account with accountId : " + accountId + " not found");
     }
 
-    public AccountDetailDto getAccountDetailDtoByAccountId(Long accountId){
+    public AccountDetailDto getAccountDetailDtoByAccountId(Long accountId) {
         Account account = findByAccountId(accountId);
         return accountDetailDtoConverter.convertToDto(account);
     }

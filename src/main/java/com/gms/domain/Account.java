@@ -20,6 +20,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+// using @NotNull annotation with only email1 field as we should be able to create account with just email ( for google login use case ),
+// @NotNull will be used with all other required fields in the updateDto so the client can only update account if it provides required values
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,24 +30,23 @@ public class Account {
     //not using @Column(name = ), hibernate naming strategy settings in application.properties make sure that columns' name are same as the variable name
     private Long accountId;
 
-    @NotNull
     @Size(min=3, max=50)
     private String name;
 
     @DateTimeFormat(pattern="MM/dd/yyyy")
-    @NotNull
+//    @NotNull
     @Past
     private Date dob;
 
-    @NotNull
+//    @NotNull
     @Size(min=3, max=50)
     private String fathersName;
 
-    @NotNull
+//    @NotNull
     @Size(min=3, max=50)
     private String mothersName;
 
-    @NotNull
+//    @NotNull
 //    @Mobile
     private String mobile1;
 

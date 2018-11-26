@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -68,6 +70,15 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("Empty accountId found!");
         }
             return ok(newRestResponse(accountService.getAccountDetailDtoByAccountId(accountId), true, "found account with accountId: " + accountId));
+    }
+
+    @GetMapping(value = "/googleLogin/{idTokenString}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<RestResponse<AccountDetailDto>> googleLogin(@PathVariable(name = "idTokenString") @NotNull @NotEmpty String idTokenString) throws GeneralSecurityException, IOException {
+        if (Utils.isStrNullOrEmpty(idTokenString)) {
+            throw new IllegalArgumentException("Empty idTokeString found!");
+        }
+        return ok(newRestResponse(accountService.findOrCreateAccountForGoogleUser(idTokenString), true, "verrified google user with idTokenString: " + idTokenString));
     }
 
     /********************* PASSED PHASE ONE ***************************/

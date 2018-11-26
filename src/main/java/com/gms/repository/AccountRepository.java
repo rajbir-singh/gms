@@ -31,6 +31,8 @@ public interface AccountRepository extends PagingAndSortingRepository<Account, L
 
     Page<Account> findByNameOrEmail1OrMobile1(Specification<Account> specification, Pageable pageable);
 
+    Account findByEmail1OrEmail2(String email1, String email2);
+
     Page<Account> findByName(Pageable pageable);
 
 //    @Query(name="AccountNameQuery", nativeQuery = true)
