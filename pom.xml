@@ -20,7 +20,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.reporting.outputEncodingorg.springframework.security>UTF-8</project.reporting.outputEncodingorg.springframework.security>
 		<java.version>1.8</java.version>
 	</properties>
 
@@ -97,7 +97,22 @@
 			<!--<artifactId>hibernate-validator</artifactId>-->
 			<!--<version>4.1.0.Final</version>-->
 		<!--</dependency>-->
-    </dependencies>
+
+		<!-- OAuth2 Client -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-client</artifactId>
+		</dependency>
+
+		<!-- JWT library -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.5.1</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<plugins>

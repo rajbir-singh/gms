@@ -27,7 +27,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     //@Column(name = "accountid")
-    //not using @Column(name = ), hibernate naming strategy settings in application.properties make sure that columns' name are same as the variable name
+    //not using @Column(name = ), hibernate naming strategy settings in application.yaml make sure that columns' name are same as the variable name
     private Long accountId;
 
     @Size(min=3, max=50)
