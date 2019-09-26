@@ -1,9 +1,10 @@
 package com.gms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.gms.enums.AuthProvider;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +17,9 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name ="account")
+@Table(name = "account", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email1")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,27 +33,27 @@ public class Account {
     //not using @Column(name = ), hibernate naming strategy settings in application.yaml make sure that columns' name are same as the variable name
     private Long accountId;
 
-    @Size(min=3, max=50)
+    @Size(min = 3, max = 50)
     private String name;
 
-    @DateTimeFormat(pattern="MM/dd/yyyy")
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
 //    @NotNull
     @Past
     private Date dob;
 
-//    @NotNull
-    @Size(min=3, max=50)
+    //    @NotNull
+    @Size(min = 3, max = 50)
     private String fathersName;
 
-//    @NotNull
-    @Size(min=3, max=50)
+    //    @NotNull
+    @Size(min = 3, max = 50)
     private String mothersName;
 
-//    @NotNull
+    //    @NotNull
 //    @Mobile
     private String mobile1;
 
-//    @Mobile
+    //    @Mobile
     private String mobile2;
 
     @NotNull
@@ -87,6 +90,204 @@ public class Account {
     private Boolean onlyChild;
 
     private String details;
+
+    ///////////////////////////
+
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
+
+    @JsonIgnore
+    private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
+
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getFathersName() {
+        return fathersName;
+    }
+
+    public void setFathersName(String fathersName) {
+        this.fathersName = fathersName;
+    }
+
+    public String getMothersName() {
+        return mothersName;
+    }
+
+    public void setMothersName(String mothersName) {
+        this.mothersName = mothersName;
+    }
+
+    public String getMobile1() {
+        return mobile1;
+    }
+
+    public void setMobile1(String mobile1) {
+        this.mobile1 = mobile1;
+    }
+
+    public String getMobile2() {
+        return mobile2;
+    }
+
+    public void setMobile2(String mobile2) {
+        this.mobile2 = mobile2;
+    }
+
+    public String getEmail1() {
+        return email1;
+    }
+
+    public void setEmail1(String email1) {
+        this.email1 = email1;
+    }
+
+    public String getEmail2() {
+        return email2;
+    }
+
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public Long getIncome() {
+        return income;
+    }
+
+    public void setIncome(Long income) {
+        this.income = income;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public Boolean getOwnHouse() {
+        return ownHouse;
+    }
+
+    public void setOwnHouse(Boolean ownHouse) {
+        this.ownHouse = ownHouse;
+    }
+
+    public Boolean getOnlyChild() {
+        return onlyChild;
+    }
+
+    public void setOnlyChild(Boolean onlyChild) {
+        this.onlyChild = onlyChild;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
 
     public static interface AccountIdStep {
         NameStep withAccountId(Long accountId);
@@ -157,15 +358,34 @@ public class Account {
     }
 
     public static interface DetailsStep {
-        BuildStep withDetails(String details);
+        ImageUrlStep withDetails(String details);
+    }
+
+    public static interface ImageUrlStep {
+        EmailVerifiedStep withImageUrl(String imageUrl);
+    }
+
+    public static interface EmailVerifiedStep {
+        PasswordStep withEmailVerified(Boolean emailVerified);
+    }
+
+    public static interface PasswordStep {
+        ProviderStep withPassword(String password);
+    }
+
+    public static interface ProviderStep {
+        ProviderIdStep withProvider(AuthProvider provider);
+    }
+
+    public static interface ProviderIdStep {
+        BuildStep withProviderId(String providerId);
     }
 
     public static interface BuildStep {
         Account build();
     }
 
-
-    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
+    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, ImageUrlStep, EmailVerifiedStep, PasswordStep, ProviderStep, ProviderIdStep, BuildStep {
         private Long accountId;
         private String name;
         private Date dob;
@@ -184,6 +404,11 @@ public class Account {
         private Boolean ownHouse;
         private Boolean onlyChild;
         private String details;
+        private String imageUrl;
+        private Boolean emailVerified;
+        private String password;
+        private AuthProvider provider;
+        private String providerId;
 
         private Builder() {
         }
@@ -295,8 +520,38 @@ public class Account {
         }
 
         @Override
-        public BuildStep withDetails(String details) {
+        public ImageUrlStep withDetails(String details) {
             this.details = details;
+            return this;
+        }
+
+        @Override
+        public EmailVerifiedStep withImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public PasswordStep withEmailVerified(Boolean emailVerified) {
+            this.emailVerified = emailVerified;
+            return this;
+        }
+
+        @Override
+        public ProviderStep withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        @Override
+        public ProviderIdStep withProvider(AuthProvider provider) {
+            this.provider = provider;
+            return this;
+        }
+
+        @Override
+        public BuildStep withProviderId(String providerId) {
+            this.providerId = providerId;
             return this;
         }
 
@@ -320,7 +575,12 @@ public class Account {
                     this.addresses,
                     this.ownHouse,
                     this.onlyChild,
-                    this.details
+                    this.details,
+                    this.imageUrl,
+                    this.emailVerified,
+                    this.password,
+                    this.provider,
+                    this.providerId
             );
         }
     }

@@ -28,7 +28,7 @@ public class AccountDetailDtoConverter implements DtoConverter<Account, AccountD
             return null;
         }
 
-        return AccountDetailDto.Builder.accountCreateDto()
+        return AccountDetailDto.Builder.accountDetailDto()
                 .withAccountId(account.getAccountId())
                 .withName(account.getName())
                 .withDob(account.getDob())
@@ -47,6 +47,11 @@ public class AccountDetailDtoConverter implements DtoConverter<Account, AccountD
                 .withOwnHouse(account.getOwnHouse())
                 .withOnlyChild(account.getOnlyChild())
                 .withDetails(account.getDetails())
+                .withImageUrl(account.getImageUrl())
+                .withEmailVerified(account.getEmailVerified())
+                .withPassword(account.getPassword())
+                .withProvider(account.getProvider())
+                .withProviderId(account.getProviderId())
                 .build();
     }
 
@@ -75,6 +80,11 @@ public class AccountDetailDtoConverter implements DtoConverter<Account, AccountD
                 .withOwnHouse(accountDetailDto.getOwnHouse())
                 .withOnlyChild(accountDetailDto.getOnlyChild())
                 .withDetails(accountDetailDto.getDetails())
+                .withImageUrl(accountDetailDto.getImageUrl())
+                .withEmailVerified(accountDetailDto.getEmailVerified())
+                .withPassword(accountDetailDto.getPassword())
+                .withProvider(accountDetailDto.getProvider())
+                .withProviderId(accountDetailDto.getProviderId())
                 .build();
     }
 }

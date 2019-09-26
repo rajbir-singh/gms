@@ -3,6 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!--TODO : add working version for each artifact from maven google doc -> https://docs.google.com/document/u/0/d/10irvjH_EvOX7Z1wrYBXYUBqTDJ9Gyxh5UiY1rJZ3wRE/edit-->
+
 	<groupId>com.gms</groupId>
 	<artifactId>gms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -18,11 +20,44 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncodingorg.springframework.security>UTF-8</project.reporting.outputEncodingorg.springframework.security>
-		<java.version>1.8</java.version>
-	</properties>
+	<!--<properties>-->
+		<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+		<!--<project.reporting.outputEncodingorg.springframework.security>UTF-8</project.reporting.outputEncodingorg.springframework.security>-->
+		<!--<java.version>1.8</java.version>-->
+	<!--</properties>-->
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-component-annotations -->
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-component-annotations</artifactId>
+				<version>1.6</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-utils -->
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-utils</artifactId>
+				<version>3.0.22</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>18.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.sonatype.plexus/plexus-cipher -->
+			<dependency>
+				<groupId>org.sonatype.plexus</groupId>
+				<artifactId>plexus-cipher</artifactId>
+				<version>1.4</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 
 	<dependencies>
 
@@ -99,9 +134,15 @@
 		<!--</dependency>-->
 
 		<!-- OAuth2 Client -->
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.security</groupId>-->
+			<!--<artifactId>spring-security-oauth2-client</artifactId>-->
+		<!--</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-client</artifactId>
+			<!--<version>5.1.6.RELEASE</version>-->
 		</dependency>
 
 		<!-- JWT library -->
@@ -110,8 +151,11 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.5.1</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<!--<version>5.2.0.BUILD-SNAPSHOT</version> Caused by: java.lang.ClassNotFoundException: org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager java.lang.IllegalStateException: Unable to load cache item-->
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -119,6 +163,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration>
+					<rules><dependencyConvergence/></rules>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

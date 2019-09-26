@@ -96,7 +96,7 @@ public class AccountService implements IAccountService {
         if (Utils.isNotEmptyObject(account)) {
             return getAccountDetailDtoByAccountId(account.getAccountId());
         }
-        AccountDetailDto accountDetailDto = AccountDetailDto.Builder.accountCreateDto()
+        AccountDetailDto accountDetailDto = AccountDetailDto.Builder.accountDetailDto()
                 .withAccountId(null)
                 .withName(null)
                 .withDob(null)
@@ -115,6 +115,11 @@ public class AccountService implements IAccountService {
                 .withOwnHouse(null)
                 .withOnlyChild(null)
                 .withDetails(null)
+                .withImageUrl(null)
+                .withEmailVerified(null)
+                .withPassword(null)
+                .withProvider(null)
+                .withProviderId(null)
                 .build();
         return addAccount(accountDetailDto);
     }
@@ -161,7 +166,7 @@ public class AccountService implements IAccountService {
         accountDetailDto.setAccountId(account.getAccountId());
 
         //modify account object according to the details in accountDetailDto (which is the update request object)
-        //TODO : do check if this is the right way, should'nt I be calling setters on the managed account object (MOB) directly rather than setting properties on another account object and setting the MOB's reference to the new account object
+        //TODO : do check if this is the right way, should'nt I be calling setters on the managed account object (MOB) directly rather than setting properties on another account object and setting the MOB'utils reference to the new account object
         account = accountDetailDtoConverter.convertFromDto(accountDetailDto);
 
         //we don't care what addresses are set on MOB from above converter, as the above converter does apt conversions, but it does'nt persist addresses

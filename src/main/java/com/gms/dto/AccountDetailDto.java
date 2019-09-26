@@ -1,10 +1,15 @@
 package com.gms.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gms.enums.AuthProvider;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 import java.sql.Date;
 import java.util.List;
@@ -64,6 +69,22 @@ public class AccountDetailDto {
     private Boolean onlyChild;
 
     private String details;
+
+    ///////////////////////////////////
+
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
+
+    @JsonIgnore
+    private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
 
     public static interface AccountIdStep {
         NameStep withAccountId(Long accountId);
@@ -134,14 +155,34 @@ public class AccountDetailDto {
     }
 
     public static interface DetailsStep {
-        BuildStep withDetails(String details);
+        ImageUrlStep withDetails(String details);
+    }
+
+    public static interface ImageUrlStep {
+        EmailVerifiedStep withImageUrl(String imageUrl);
+    }
+
+    public static interface EmailVerifiedStep {
+        PasswordStep withEmailVerified(Boolean emailVerified);
+    }
+
+    public static interface PasswordStep {
+        ProviderStep withPassword(String password);
+    }
+
+    public static interface ProviderStep {
+        ProviderIdStep withProvider(AuthProvider provider);
+    }
+
+    public static interface ProviderIdStep {
+        BuildStep withProviderId(String providerId);
     }
 
     public static interface BuildStep {
         AccountDetailDto build();
     }
 
-    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, BuildStep {
+    public static class Builder implements AccountIdStep, NameStep, DobStep, FathersNameStep, MothersNameStep, Mobile1Step, Mobile2Step, Email1Step, Email2Step, HeightStep, WeightStep, QualificationStep, OccupationStep, IncomeStep, AddressesStep, OwnHouseStep, OnlyChildStep, DetailsStep, ImageUrlStep, EmailVerifiedStep, PasswordStep, ProviderStep, ProviderIdStep, BuildStep {
         private Long accountId;
         private String name;
         private Date dob;
@@ -160,11 +201,16 @@ public class AccountDetailDto {
         private Boolean ownHouse;
         private Boolean onlyChild;
         private String details;
+        private String imageUrl;
+        private Boolean emailVerified;
+        private String password;
+        private AuthProvider provider;
+        private String providerId;
 
         private Builder() {
         }
 
-        public static AccountIdStep accountCreateDto() {
+        public static AccountIdStep accountDetailDto() {
             return new Builder();
         }
 
@@ -271,8 +317,38 @@ public class AccountDetailDto {
         }
 
         @Override
-        public BuildStep withDetails(String details) {
+        public ImageUrlStep withDetails(String details) {
             this.details = details;
+            return this;
+        }
+
+        @Override
+        public EmailVerifiedStep withImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public PasswordStep withEmailVerified(Boolean emailVerified) {
+            this.emailVerified = emailVerified;
+            return this;
+        }
+
+        @Override
+        public ProviderStep withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        @Override
+        public ProviderIdStep withProvider(AuthProvider provider) {
+            this.provider = provider;
+            return this;
+        }
+
+        @Override
+        public BuildStep withProviderId(String providerId) {
+            this.providerId = providerId;
             return this;
         }
 
@@ -296,7 +372,12 @@ public class AccountDetailDto {
                     this.addresses,
                     this.ownHouse,
                     this.onlyChild,
-                    this.details
+                    this.details,
+                    this.imageUrl,
+                    this.emailVerified,
+                    this.password,
+                    this.provider,
+                    this.providerId
             );
         }
     }

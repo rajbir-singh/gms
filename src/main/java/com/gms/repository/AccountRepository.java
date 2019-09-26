@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends PagingAndSortingRepository<Account, Long>, AccountRepositoryCustom {
@@ -18,7 +19,7 @@ public interface AccountRepository extends PagingAndSortingRepository<Account, L
     //    List<Account> findAll();
     Account findByAccountId(Long accountId);
 
-    Account findByEmail1(Account emailAddress);
+    Optional<Account> findByEmail1(String emailAddress);
 
     List<Account> findAll();
 

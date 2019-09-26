@@ -31,19 +31,19 @@ spring:
             ddl-auto: none
             naming:
                 naming-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-                physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         properties:
             hibernate:
-                format_sql=true
+                format_sql: true
 
     security:
         oauth2:
             client:
                 registration:
                     google:
-                        clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
-                        clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
-                        redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+                        clientSecret: qDjIjPpTxYDROzC5Igx8wfuTpTQR1bAYnGWVFtP-
+                        clientId: 0oa1dpr2nwBOVfu6Z357
+                        redirectUriTemplate: "http://localhost:8080/oauth2/callback/google"
                         scope:
                         - email
                         - profile
