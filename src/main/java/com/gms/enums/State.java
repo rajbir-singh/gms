@@ -1,6 +1,9 @@
-package com.gms.account.enums;
+package com.gms.enums;
+
+import java.util.Arrays;
 
 public enum State {
+    DL("Delhi"),
     AP("Andhra Pradesh"),
     AR("Arunachal Pradesh"),
     AS("Assam"),
@@ -33,13 +36,27 @@ public enum State {
     CH("Chandigarh"),
     DH("Dadra and Nagar Haveli"),
     DD("Daman and Diu"),
-    DL("Delhi"),
     LD("Lakshadweep"),
     PY("Pondicherry");
 
     private String name = null;
 
     private State(String name) {
+
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static State fromValue(String value) {
+        for (State state : values()) {
+            if (state.name.equalsIgnoreCase(value)) {
+                return state;
+            }
+        }
+        throw new IllegalArgumentException(
+                "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
     }
 }
