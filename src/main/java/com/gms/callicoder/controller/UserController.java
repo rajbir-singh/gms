@@ -1,10 +1,9 @@
-package com.example.springsocial.controller;
+package com.gms.callicoder.controller;
 
-import com.example.springsocial.exception.ResourceNotFoundException;
-import com.example.springsocial.model.User;
-import com.example.springsocial.repository.UserRepository;
-import com.example.springsocial.security.CurrentUser;
-import com.example.springsocial.security.UserPrincipal;
+import com.gms.callicoder.security.CurrentUser;
+import com.gms.domain.Account;
+import com.gms.exception.ResourceNotFoundException;
+import com.gms.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+    public Account getCurrentUser(@CurrentUser Account userPrincipal) {
+        return accountRepository.findById(userPrincipal.getAccountId())
+                .orElseThrow(() -> new ResourceNotFoundException("User id: " +  userPrincipal.getAccountId()));
     }
 }

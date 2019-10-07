@@ -13,6 +13,7 @@ import java.util.List;
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        //TODO : add more strict rule in allowedOrigins()
         registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE")
 //                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
 //                        "Access-Control-Request-Headers")

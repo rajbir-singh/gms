@@ -28,7 +28,7 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: create
+            ddl-auto: none
             naming:
                 naming-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
                 physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

@@ -1,6 +1,11 @@
 package com.gms.callicoder.controller;
 
 import com.gms.callicoder.exception.BadRequestException;
+import com.gms.callicoder.payload.ApiResponse;
+import com.gms.callicoder.payload.AuthResponse;
+import com.gms.callicoder.payload.LoginRequest;
+import com.gms.callicoder.payload.SignUpRequest;
+import com.gms.callicoder.security.AccountPrincipal;
 import com.gms.callicoder.security.TokenProvider;
 import com.gms.domain.Account;
 import com.gms.enums.AuthProvider;
@@ -35,19 +40,19 @@ public class AuthController {
     private TokenProvider tokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody com.example.springsocial.payload.LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
-                        loginRequest.getPassword()
+                          loginRequest.getPassword()
                 )
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.createToken(authentication);
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(new AuthResponse(token, ((AccountPrincipal)authentication.getPrincipal()).getId().toString()));
     }
 
     @PostMapping("/signup")
@@ -72,7 +77,7 @@ public class AuthController {
                 .buildAndExpand(result.getAccountId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully@"));
+                .body(new ApiResponse(true, "User registered successfully"));
     }
 
 }
