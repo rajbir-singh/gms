@@ -19,6 +19,8 @@ public interface AccountRepository extends PagingAndSortingRepository<Account, L
     //    List<Account> findAll();
     Account findByAccountId(Long accountId);
 
+    Boolean existsByEmail1(String email);
+
     Optional<Account> findByEmail1(String emailAddress);
 
     List<Account> findAll();
